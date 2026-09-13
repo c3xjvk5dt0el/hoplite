@@ -1,0 +1,288 @@
+#property copyright "Momentum Candle XAU"
+#property version   "1.00"
+#property strict
+#property description "Closed-bar XAUUSD M5/M15 momentum breakout. Demo-test before live use."
+
+#include <Trade\Trade.mqh>
+#include "MomentumCore.mqh"
+
+input group "Momentum - original Pine thresholds"
+input double InpM5BodyPips = 35.0;
+input double InpM15BodyPips = 45.0;
+input double InpGoldPipSize = 0.10;
+input double InpMaxWickPct = 30.0;
+input bool   InpConservativeWick = false;
+input bool   InpUseConsolidation = false;
+input int    InpConsolidationBars = 3;
+
+input group "Trend and volatility"
+input bool            InpUseEMA = true;
+input ENUM_TIMEFRAMES InpEMATimeframe = PERIOD_H1;
+input int             InpEMAPeriod = 50;
+input int             InpATRPeriod = 14;
+input double          InpMaxCandleATR = 2.5;
+
+input group "Entry / stop / target"
+input double InpEntryBufferATR = 0.10;
+input double InpSLBufferATR = 0.15;
+input double InpRewardRisk = 2.0;
+input int    InpPendingBars = 3;
+input int    InpMaxSignalDelaySeconds = 30;
+
+input group "Risk and execution"
+input double InpRiskPercent = 0.50;
+input double InpMaxLots = 1.0;
+input double InpMaxSpreadPrice = 0.50;
+input double InpRoundTripCostPerLot = 0.0;
+input ulong  InpMagic = 26091301;
+
+CTrade trade;
+int atr_handle = INVALID_HANDLE;
+int ema_handle = INVALID_HANDLE;
+datetime last_processed_bar = 0;
+
+void ReleaseIndicators()
+{
+   if(atr_handle != INVALID_HANDLE)
+      IndicatorRelease(atr_handle);
+   if(ema_handle != INVALID_HANDLE)
+      IndicatorRelease(ema_handle);
+   atr_handle = INVALID_HANDLE;
+   ema_handle = INVALID_HANDLE;
+}
+
+int OnInit()
+{
+   string name = _Symbol;
+   StringToUpper(name);
+   const bool gold_usd =
+      (SymbolInfoString(_Symbol, SYMBOL_CURRENCY_BASE) == "XAU" &&
+       SymbolInfoString(_Symbol, SYMBOL_CURRENCY_PROFIT) == "USD") ||
+      StringFind(name, "XAUUSD") == 0;
+   if(!gold_usd || (_Period != PERIOD_M5 && _Period != PERIOD_M15))
+   {
+      Print("Use an XAUUSD M5 or M15 chart (broker suffixes supported).");
+      return INIT_PARAMETERS_INCORRECT;
+   }
+   if(InpM5BodyPips <= 0 || InpM15BodyPips <= 0 || InpGoldPipSize <= 0 ||
+      InpMaxWickPct <= 0 || InpMaxWickPct >= 100 ||
+      InpConsolidationBars < 1 || InpConsolidationBars > 10 ||
+      InpEMAPeriod < 1 || InpATRPeriod < 1 || InpMaxCandleATR <= 0 ||
+      InpEntryBufferATR < 0 || InpSLBufferATR < 0 || InpRewardRisk < 1 ||
+      InpPendingBars < 1 || InpPendingBars > 100 ||
+      InpMaxSignalDelaySeconds < 1 ||
+      InpMaxSignalDelaySeconds >= PeriodSeconds(_Period) ||
+      InpRiskPercent <= 0 || InpRiskPercent > 5 || InpMaxLots <= 0 ||
+      InpMaxSpreadPrice <= 0 || InpRoundTripCostPerLot < 0 || InpMagic == 0 ||
+      (InpUseEMA && PeriodSeconds(InpEMATimeframe) < PeriodSeconds(_Period)))
+   {
+      Print("Invalid inputs. Risk must be > 0 and <= 5%; EMA TF must be >= chart TF.");
+      return INIT_PARAMETERS_INCORRECT;
+   }
+
+   const long modes = SymbolInfoInteger(_Symbol, SYMBOL_ORDER_MODE);
+   const long expiry = SymbolInfoInteger(_Symbol, SYMBOL_EXPIRATION_MODE);
+   if((modes & SYMBOL_ORDER_STOP) == 0 || (modes & SYMBOL_ORDER_SL) == 0 ||
+      (modes & SYMBOL_ORDER_TP) == 0 || (expiry & SYMBOL_EXPIRATION_SPECIFIED) == 0 ||
+      SymbolInfoInteger(_Symbol, SYMBOL_CHART_MODE) != SYMBOL_CHART_MODE_BID ||
+      SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE) <= 0)
+   {
+      Print("Broker must support Bid candles, stop orders, SL/TP and server-side specified expiry.");
+      return INIT_FAILED;
+   }
+
+   atr_handle = iATR(_Symbol, _Period, InpATRPeriod);
+   if(InpUseEMA)
+      ema_handle = iMA(_Symbol, InpEMATimeframe, InpEMAPeriod, 0, MODE_EMA, PRICE_CLOSE);
+   if(atr_handle == INVALID_HANDLE || (InpUseEMA && ema_handle == INVALID_HANDLE))
+   {
+      ReleaseIndicators();
+      return INIT_FAILED;
+   }
+
+   trade.SetExpertMagicNumber(InpMagic);
+   trade.SetAsyncMode(false);
+   // Pending orders require RETURN independently of the market filling mode.
+   trade.SetTypeFilling(ORDER_FILLING_RETURN);
+   trade.SetMarginMode();
+   last_processed_bar = iTime(_Symbol, _Period, 0);
+   Print("Ready. Waiting for the next closed candle. Risk excludes unbudgeted costs and gaps.");
+   return INIT_SUCCEEDED;
+}
+
+void OnDeinit(const int reason)
+{
+   ReleaseIndicators();
+}
+
+bool HasSymbolExposure()
+{
+   // Block manual and other-EA exposure too, including on netting accounts.
+   for(int i = PositionsTotal() - 1; i >= 0; --i)
+      if(PositionGetTicket(i) != 0 && PositionGetString(POSITION_SYMBOL) == _Symbol)
+         return true;
+   for(int i = OrdersTotal() - 1; i >= 0; --i)
+      if(OrderGetTicket(i) != 0 && OrderGetString(ORDER_SYMBOL) == _Symbol)
+         return true;
+   return false;
+}
+
+bool ReadIndicator(const int handle, const int warmup, double &value)
+{
+   double buffer[1];
+   if(BarsCalculated(handle) < warmup + 2 || CopyBuffer(handle, 0, 1, 1, buffer) != 1)
+      return false;
+   value = buffer[0];
+   return MathIsValidNumber(value) && value != EMPTY_VALUE && value > 0.0;
+}
+
+bool TradingAllowed(const bool buy)
+{
+   if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) || !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
+      !AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) || !AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
+      return false;
+   const long mode = SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE);
+   return mode == SYMBOL_TRADE_MODE_FULL ||
+          (buy && mode == SYMBOL_TRADE_MODE_LONGONLY) ||
+          (!buy && mode == SYMBOL_TRADE_MODE_SHORTONLY);
+}
+
+void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
+                  const datetime bar_open)
+{
+   if(HasSymbolExposure() || !TradingAllowed(buy))
+      return;
+
+   MqlTick quote;
+   if(!SymbolInfoTick(_Symbol, quote) || quote.bid <= 0 || quote.ask < quote.bid)
+      return;
+   const double spread = quote.ask - quote.bid;
+   if(spread > InpMaxSpreadPrice)
+   {
+      Print("Signal skipped: spread exceeds limit.");
+      return;
+   }
+
+   const double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   double entry, sl, tp;
+   if(!MomentumLevels(buy, signal.high, signal.low, atr, spread, tick_size,
+                      InpEntryBufferATR, InpSLBufferATR, InpRewardRisk, entry, sl, tp))
+      return;
+   const int digits = (int)SymbolInfoInteger(_Symbol, SYMBOL_DIGITS);
+   entry = NormalizeDouble(entry, digits);
+   sl = NormalizeDouble(sl, digits);
+   tp = NormalizeDouble(tp, digits);
+
+   const double min_distance = MathMax(tick_size,
+      (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point);
+   const double market_distance = buy ? entry - quote.ask : quote.bid - entry;
+   if(market_distance < min_distance || MathAbs(entry - sl) < min_distance ||
+      MathAbs(tp - entry) < min_distance)
+   {
+      Print("Signal skipped: breakout already passed or broker stop distance too large.");
+      return;
+   }
+
+   const ENUM_ORDER_TYPE side = buy ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+   const double min_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   const double max_lot = MathMin(InpMaxLots, SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX));
+   const double lot_step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   double reference_profit = 0;
+   if(min_lot <= 0 || !OrderCalcProfit(side, _Symbol, min_lot, entry, sl, reference_profit) ||
+      reference_profit >= 0)
+   {
+      Print("Signal skipped: cannot calculate stop-loss risk.");
+      return;
+   }
+   const double budget = AccountInfoDouble(ACCOUNT_EQUITY) * InpRiskPercent / 100.0;
+   const double loss_per_lot = -reference_profit / min_lot + InpRoundTripCostPerLot;
+   const double volume = RiskVolume(budget, loss_per_lot, min_lot, max_lot, lot_step);
+   if(volume <= 0)
+   {
+      Print("Signal skipped: minimum broker lot exceeds risk budget or lot cap.");
+      return;
+   }
+   double margin = 0;
+   if(!OrderCalcMargin(side, _Symbol, volume, entry, margin) ||
+      margin > AccountInfoDouble(ACCOUNT_MARGIN_FREE) * 0.90)
+   {
+      Print("Signal skipped: insufficient free margin.");
+      return;
+   }
+
+   const datetime expiration = bar_open + InpPendingBars * PeriodSeconds(_Period);
+   if(expiration <= TimeCurrent())
+      return;
+   const bool sent = buy
+      ? trade.BuyStop(volume, entry, _Symbol, sl, tp, ORDER_TIME_SPECIFIED, expiration, "MomentumXAU")
+      : trade.SellStop(volume, entry, _Symbol, sl, tp, ORDER_TIME_SPECIFIED, expiration, "MomentumXAU");
+   const uint code = trade.ResultRetcode();
+   if(!sent || (code != TRADE_RETCODE_DONE && code != TRADE_RETCODE_PLACED) ||
+      trade.ResultOrder() == 0)
+   {
+      PrintFormat("Order not confirmed: %u %s. No automatic resend.", code,
+                  trade.ResultRetcodeDescription());
+      return;
+   }
+   PrintFormat("%s stop #%I64u lots=%.8f entry=%.*f SL=%.*f TP=%.*f estimated risk=%.2f %s expires=%s",
+               buy ? "BUY" : "SELL", trade.ResultOrder(), volume, digits, entry,
+               digits, sl, digits, tp, volume * loss_per_lot,
+               AccountInfoString(ACCOUNT_CURRENCY), TimeToString(expiration));
+}
+
+// False means data is not ready; retry only during the short new-bar window.
+bool EvaluateClosedBar(const datetime bar_open)
+{
+   const int needed = InpUseConsolidation ? InpConsolidationBars + 1 : 1;
+   MqlRates rates[];
+   ArraySetAsSeries(rates, true);
+   if(CopyRates(_Symbol, _Period, 1, needed, rates) != needed)
+      return false;
+   if(rates[0].time + PeriodSeconds(_Period) != bar_open)
+   {
+      Print("Signal skipped: preceding candle is separated by a session/data gap.");
+      return true;
+   }
+
+   double atr, ema = 0;
+   if(!ReadIndicator(atr_handle, InpATRPeriod, atr) ||
+      (InpUseEMA && !ReadIndicator(ema_handle, InpEMAPeriod, ema)))
+      return false;
+
+   bool buy = false;
+   const double min_body = (_Period == PERIOD_M5 ? InpM5BodyPips : InpM15BodyPips) * InpGoldPipSize;
+   if(!MomentumSignal(rates[0].open, rates[0].high, rates[0].low, rates[0].close,
+                      min_body, InpMaxWickPct, InpConservativeWick, buy) ||
+      rates[0].high - rates[0].low > InpMaxCandleATR * atr)
+      return true;
+   if(InpUseEMA && (buy ? rates[0].close <= ema : rates[0].close >= ema))
+      return true;
+   if(InpUseConsolidation)
+   {
+      const double body = MathAbs(rates[0].close - rates[0].open);
+      for(int i = 1; i < needed; ++i)
+         if(MathAbs(rates[i].close - rates[i].open) >= body)
+            return true;
+   }
+   SubmitSignal(buy, rates[0], atr, bar_open);
+   return true;
+}
+
+void OnTick()
+{
+   const datetime bar_open = iTime(_Symbol, _Period, 0);
+   if(bar_open <= 0 || bar_open == last_processed_bar)
+      return;
+   if(last_processed_bar == 0)
+   {
+      last_processed_bar = bar_open;
+      return;
+   }
+   if(TimeCurrent() - bar_open > InpMaxSignalDelaySeconds)
+   {
+      last_processed_bar = bar_open;
+      return;
+   }
+   if(EvaluateClosedBar(bar_open))
+      last_processed_bar = bar_open;
+}
