@@ -18,7 +18,8 @@ double NormalizeDouble(double x, int digits)
 }
 
 // Compile the actual production math, not a separately implemented strategy.
-#include "../Experts/MomentumCandleXAU/MomentumCore.mqh"
+#define MOMENTUM_CORE_TEST
+#include "../Experts/MomentumCandleXAU/MomentumCandleXAU.mq5"
 
 int checks = 0;
 void check(bool condition, const char* name)

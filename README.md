@@ -5,14 +5,14 @@ EA untuk **XAUUSD M5 atau M15**, berdasarkan indikator Pine Script “Momentum C
 ## File dan pemasangan
 
 1. Di MT5 pilih **File → Open Data Folder**.
-2. Buat folder `MQL5/Experts/MomentumCandleXAU/`, lalu salin **kedua file** berikut ke sana:
-   - [`MomentumCandleXAU.mq5`](Experts/MomentumCandleXAU/MomentumCandleXAU.mq5)
-   - [`MomentumCore.mqh`](Experts/MomentumCandleXAU/MomentumCore.mqh)
-3. Buka `.mq5` di MetaEditor lalu tekan **F7**. File `.mqh` harus tetap di folder yang sama.
+2. Unduh **satu file saja**, [`MomentumCandleXAU.mq5`](Experts/MomentumCandleXAU/MomentumCandleXAU.mq5), melalui tombol **Download raw file** di GitHub. Simpan di `MQL5/Experts/` atau subfolder `MomentumCandleXAU/`. Jangan menyimpan halaman HTML GitHub sebagai `.mq5`.
+3. Buka file tersebut di **MetaEditor milik MetaTrader 5**, bukan MT4 atau Pine Editor, lalu tekan **F7**. Versi 1.01 sudah memuat semua fungsi strategi; file pendukung versi lama tidak diperlukan. `Trade\Trade.mqh` adalah library standar bawaan MT5, bukan file tambahan yang perlu diunduh dari proyek ini.
 4. Jalankan dahulu di **Strategy Tester/demo**, bukan akun live. Aktifkan Algo Trading jika digunakan pada chart demo.
 5. Pasang hanya **satu instance EA per simbol per akun**: pilih M5 **atau** M15. EA menolak order baru jika sudah ada posisi/order pada simbol tersebut, termasuk transaksi manual/EA lain. Pemeriksaan ini bukan kunci atomik antar-EA; jangan jalankan dua instance bersamaan.
 
 EA menerima simbol dengan awalan `XAUUSD` seperti `XAUUSDm`, atau simbol yang melaporkan base currency `XAU` dan profit currency `USD`. Nama `GOLD` bisa bekerja jika metadata broker sesuai. EA menolak TF selain M5/M15 dan mensyaratkan chart Bid, pending stop, SL/TP, serta kedaluwarsa order bertipe `ORDER_TIME_SPECIFIED` di server broker. Tidak ada fallback ke pending tanpa batas waktu.
+
+Jika masih gagal compile, kirim **5 pesan error pertama beserta nomor baris** dari tab Errors MetaEditor, serta versi/build MT5. Banyak error dapat merupakan efek berantai dari satu kesalahan awal; penyebab pastinya tidak dapat ditetapkan tanpa pesan tersebut. Bila yang tidak ditemukan adalah `Trade\Trade.mqh`, periksa instalasi/library standar MT5. Aturan trading versi 1.01 tidak berubah dari versi 1.00; perubahan ini menyederhanakan distribusi menjadi satu file.
 
 ## Rekomendasi aturan awal
 
@@ -84,7 +84,7 @@ Jika ingin hasil dianalisis lebih lanjut, kirim laporan HTML tester, input `.set
 
 ## Verifikasi lokal untuk pengembang
 
-Jalankan `bash tests/run.sh` (memerlukan `g++`). Test mengompilasi **fungsi matematika produksi dalam `MomentumCore.mqh`** sebagai C++ dengan shim fungsi matematika MQL; tidak menggandakan implementasi strategi. Cakupan: batas body/wick, arah wick konservatif, candle invalid/doji, harga Bid/Ask, rounding tick/lot, batas risiko/minimum lot, cadangan komisi, dan 10.000 kasus acak deterministik untuk invariant harga serta risiko. EA yang memakai API terminal tetap harus dikompilasi dan diuji di MT5.
+Jalankan `bash tests/run.sh` (memerlukan `g++`). Test memeriksa bahwa EA tidak menggunakan custom include, lalu mengompilasi **fungsi matematika produksi langsung dari `MomentumCandleXAU.mq5`** sebagai C++ dengan shim fungsi matematika MQL; tidak menggandakan implementasi strategi. Macro `MOMENTUM_CORE_TEST` hanya didefinisikan oleh test C++ untuk mengecualikan API terminal; jangan mendefinisikannya saat compile di MetaEditor. Cakupan: batas body/wick, arah wick konservatif, candle invalid/doji, harga Bid/Ask, rounding tick/lot, batas risiko/minimum lot, cadangan komisi, dan 10.000 kasus acak deterministik untuk invariant harga serta risiko. EA yang memakai API terminal tetap harus dikompilasi dan diuji di MT5.
 
 ### Referensi implementasi
 
