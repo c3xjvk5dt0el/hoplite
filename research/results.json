@@ -1,0 +1,1077 @@
+{
+  "kind": "M1 BID/ASK OHLC proxy, NOT MT5/tick backtest",
+  "total_minutes": 616216,
+  "signal_count": 11815,
+  "scenarios": {
+    "base": {
+      "config": {
+        "rr": 1.5,
+        "stop_atr": 0.1,
+        "tick": 0.001,
+        "max_spread": 0.5,
+        "max_spread_fraction": 0.1,
+        "max_hold_seconds": 3600,
+        "lots": 0.01,
+        "contract_size": 100,
+        "commission": 0.04,
+        "slippage": 0.05
+      },
+      "periods": {
+        "2025_H1": {
+          "available": true,
+          "observed_start": "2025-01-01T23:05:00Z",
+          "observed_last_minute": "2025-06-30T23:59:00Z",
+          "minutes": 173994,
+          "skips": {
+            "opened": 1625,
+            "position_open": 1536,
+            "spread_to_risk_or_invalid_stop": 89
+          },
+          "summary": {
+            "trades": 1625,
+            "wins": 677,
+            "losses": 948,
+            "win_rate_pct": 41.662,
+            "net_usd": -71.89,
+            "gross_profit_usd": 3190.26,
+            "gross_loss_usd": -3262.15,
+            "profit_factor": 0.978,
+            "average_win_usd": 4.712,
+            "average_loss_usd": -3.441,
+            "expected_payoff_usd": -0.0442,
+            "closed_trade_max_drawdown_usd": 281.78,
+            "max_consecutive_losses": 15,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 44,
+            "exits_after_60_minutes": 37,
+            "exit_reasons": {
+              "target": 416,
+              "timeout": 454,
+              "stop": 750,
+              "stop_gap": 5
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 964,
+              "wins": 426,
+              "win_rate_pct": 44.191,
+              "net_usd": -16.15,
+              "profit_factor": 0.9909,
+              "closed_trade_max_drawdown_usd": 173.35
+            },
+            "sell": {
+              "trades": 661,
+              "wins": 251,
+              "win_rate_pct": 37.973,
+              "net_usd": -55.73,
+              "profit_factor": 0.9623,
+              "closed_trade_max_drawdown_usd": 208.0
+            }
+          },
+          "by_exit_month": {
+            "2025-01": {
+              "trades": 267,
+              "wins": 119,
+              "win_rate_pct": 44.569,
+              "net_usd": 2.46,
+              "profit_factor": 1.0071,
+              "closed_trade_max_drawdown_usd": 40.3
+            },
+            "2025-02": {
+              "trades": 250,
+              "wins": 101,
+              "win_rate_pct": 40.4,
+              "net_usd": -22.16,
+              "profit_factor": 0.9403,
+              "closed_trade_max_drawdown_usd": 58.65
+            },
+            "2025-03": {
+              "trades": 259,
+              "wins": 92,
+              "win_rate_pct": 35.521,
+              "net_usd": -163.72,
+              "profit_factor": 0.6344,
+              "closed_trade_max_drawdown_usd": 212.49
+            },
+            "2025-04": {
+              "trades": 299,
+              "wins": 132,
+              "win_rate_pct": 44.147,
+              "net_usd": 128.28,
+              "profit_factor": 1.1595,
+              "closed_trade_max_drawdown_usd": 84.51
+            },
+            "2025-05": {
+              "trades": 287,
+              "wins": 129,
+              "win_rate_pct": 44.948,
+              "net_usd": 90.8,
+              "profit_factor": 1.1311,
+              "closed_trade_max_drawdown_usd": 65.29
+            },
+            "2025-06": {
+              "trades": 263,
+              "wins": 104,
+              "win_rate_pct": 39.544,
+              "net_usd": -107.54,
+              "profit_factor": 0.82,
+              "closed_trade_max_drawdown_usd": 131.88
+            }
+          }
+        },
+        "2025_H2": {
+          "available": true,
+          "observed_start": "2025-07-01T00:00:00Z",
+          "observed_last_minute": "2025-12-31T21:57:00Z",
+          "minutes": 179087,
+          "skips": {
+            "opened": 1730,
+            "position_open": 1684,
+            "spread_to_risk_or_invalid_stop": 30,
+            "spread": 6
+          },
+          "summary": {
+            "trades": 1730,
+            "wins": 757,
+            "losses": 973,
+            "win_rate_pct": 43.757,
+            "net_usd": 6.8,
+            "gross_profit_usd": 4392.8,
+            "gross_loss_usd": -4385.99,
+            "profit_factor": 1.0016,
+            "average_win_usd": 5.803,
+            "average_loss_usd": -4.508,
+            "expected_payoff_usd": 0.0039,
+            "closed_trade_max_drawdown_usd": 301.4,
+            "max_consecutive_losses": 13,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 43,
+            "exits_after_60_minutes": 41,
+            "exit_reasons": {
+              "target": 468,
+              "stop": 801,
+              "timeout": 455,
+              "stop_gap": 6
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 1058,
+              "wins": 467,
+              "win_rate_pct": 44.14,
+              "net_usd": -36.05,
+              "profit_factor": 0.9859,
+              "closed_trade_max_drawdown_usd": 282.57
+            },
+            "sell": {
+              "trades": 672,
+              "wins": 290,
+              "win_rate_pct": 43.155,
+              "net_usd": 42.86,
+              "profit_factor": 1.0234,
+              "closed_trade_max_drawdown_usd": 192.33
+            }
+          },
+          "by_exit_month": {
+            "2025-07": {
+              "trades": 296,
+              "wins": 133,
+              "win_rate_pct": 44.932,
+              "net_usd": 24.73,
+              "profit_factor": 1.0573,
+              "closed_trade_max_drawdown_usd": 59.1
+            },
+            "2025-08": {
+              "trades": 279,
+              "wins": 111,
+              "win_rate_pct": 39.785,
+              "net_usd": -80.46,
+              "profit_factor": 0.8248,
+              "closed_trade_max_drawdown_usd": 114.72
+            },
+            "2025-09": {
+              "trades": 275,
+              "wins": 125,
+              "win_rate_pct": 45.455,
+              "net_usd": 44.32,
+              "profit_factor": 1.0816,
+              "closed_trade_max_drawdown_usd": 77.5
+            },
+            "2025-10": {
+              "trades": 314,
+              "wins": 150,
+              "win_rate_pct": 47.771,
+              "net_usd": 164.63,
+              "profit_factor": 1.1399,
+              "closed_trade_max_drawdown_usd": 74.46
+            },
+            "2025-11": {
+              "trades": 271,
+              "wins": 117,
+              "win_rate_pct": 43.173,
+              "net_usd": -38.69,
+              "profit_factor": 0.9556,
+              "closed_trade_max_drawdown_usd": 150.75
+            },
+            "2025-12": {
+              "trades": 295,
+              "wins": 121,
+              "win_rate_pct": 41.017,
+              "net_usd": -107.72,
+              "profit_factor": 0.8808,
+              "closed_trade_max_drawdown_usd": 188.06
+            }
+          }
+        },
+        "2026_Jan_May": {
+          "available": true,
+          "observed_start": "2026-01-01T23:05:00Z",
+          "observed_last_minute": "2026-05-31T23:59:00Z",
+          "minutes": 144185,
+          "skips": {
+            "opened": 1444,
+            "position_open": 1339,
+            "spread_to_risk_or_invalid_stop": 8
+          },
+          "summary": {
+            "trades": 1444,
+            "wins": 609,
+            "losses": 835,
+            "win_rate_pct": 42.175,
+            "net_usd": 129.7,
+            "gross_profit_usd": 7283.83,
+            "gross_loss_usd": -7154.12,
+            "profit_factor": 1.0181,
+            "average_win_usd": 11.96,
+            "average_loss_usd": -8.568,
+            "expected_payoff_usd": 0.0898,
+            "closed_trade_max_drawdown_usd": 801.69,
+            "max_consecutive_losses": 12,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 26,
+            "exits_after_60_minutes": 36,
+            "exit_reasons": {
+              "timeout": 361,
+              "target": 395,
+              "stop": 674,
+              "stop_gap": 13,
+              "end_of_period": 1
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 734,
+              "wins": 315,
+              "win_rate_pct": 42.916,
+              "net_usd": -49.61,
+              "profit_factor": 0.9849,
+              "closed_trade_max_drawdown_usd": 451.46
+            },
+            "sell": {
+              "trades": 710,
+              "wins": 294,
+              "win_rate_pct": 41.408,
+              "net_usd": 179.32,
+              "profit_factor": 1.0463,
+              "closed_trade_max_drawdown_usd": 459.16
+            }
+          },
+          "by_exit_month": {
+            "2026-01": {
+              "trades": 292,
+              "wins": 143,
+              "win_rate_pct": 48.973,
+              "net_usd": 680.88,
+              "profit_factor": 1.6671,
+              "closed_trade_max_drawdown_usd": 148.12
+            },
+            "2026-02": {
+              "trades": 269,
+              "wins": 107,
+              "win_rate_pct": 39.777,
+              "net_usd": -166.34,
+              "profit_factor": 0.9071,
+              "closed_trade_max_drawdown_usd": 390.65
+            },
+            "2026-03": {
+              "trades": 298,
+              "wins": 121,
+              "win_rate_pct": 40.604,
+              "net_usd": -183.25,
+              "profit_factor": 0.9023,
+              "closed_trade_max_drawdown_usd": 345.86
+            },
+            "2026-04": {
+              "trades": 284,
+              "wins": 111,
+              "win_rate_pct": 39.085,
+              "net_usd": -113.85,
+              "profit_factor": 0.9132,
+              "closed_trade_max_drawdown_usd": 277.36
+            },
+            "2026-05": {
+              "trades": 301,
+              "wins": 127,
+              "win_rate_pct": 42.193,
+              "net_usd": -87.74,
+              "profit_factor": 0.9241,
+              "closed_trade_max_drawdown_usd": 151.77
+            }
+          }
+        },
+        "2026_Jun_Aug": {
+          "available": true,
+          "observed_start": "2026-06-01T00:00:00Z",
+          "observed_last_minute": "2026-08-31T23:59:00Z",
+          "minutes": 90454,
+          "skips": {
+            "opened": 896,
+            "position_open": 870,
+            "spread_to_risk_or_invalid_stop": 19
+          },
+          "summary": {
+            "trades": 896,
+            "wins": 371,
+            "losses": 525,
+            "win_rate_pct": 41.406,
+            "net_usd": -35.96,
+            "gross_profit_usd": 3146.62,
+            "gross_loss_usd": -3182.57,
+            "profit_factor": 0.9887,
+            "average_win_usd": 8.481,
+            "average_loss_usd": -6.062,
+            "expected_payoff_usd": -0.0401,
+            "closed_trade_max_drawdown_usd": 271.77,
+            "max_consecutive_losses": 12,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 20,
+            "exits_after_60_minutes": 18,
+            "exit_reasons": {
+              "stop": 433,
+              "target": 232,
+              "timeout": 225,
+              "stop_gap": 6
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 420,
+              "wins": 173,
+              "win_rate_pct": 41.19,
+              "net_usd": -60.52,
+              "profit_factor": 0.9593,
+              "closed_trade_max_drawdown_usd": 258.97
+            },
+            "sell": {
+              "trades": 476,
+              "wins": 198,
+              "win_rate_pct": 41.597,
+              "net_usd": 24.56,
+              "profit_factor": 1.0145,
+              "closed_trade_max_drawdown_usd": 285.58
+            }
+          },
+          "by_exit_month": {
+            "2026-06": {
+              "trades": 306,
+              "wins": 129,
+              "win_rate_pct": 42.157,
+              "net_usd": 14.58,
+              "profit_factor": 1.012,
+              "closed_trade_max_drawdown_usd": 104.16
+            },
+            "2026-07": {
+              "trades": 312,
+              "wins": 121,
+              "win_rate_pct": 38.782,
+              "net_usd": -103.92,
+              "profit_factor": 0.8963,
+              "closed_trade_max_drawdown_usd": 211.68
+            },
+            "2026-08": {
+              "trades": 278,
+              "wins": 121,
+              "win_rate_pct": 43.525,
+              "net_usd": 53.38,
+              "profit_factor": 1.0551,
+              "closed_trade_max_drawdown_usd": 203.01
+            }
+          }
+        }
+      },
+      "combined_summary": {
+        "trades": 5695,
+        "wins": 2414,
+        "losses": 3281,
+        "win_rate_pct": 42.388,
+        "net_usd": 28.67,
+        "gross_profit_usd": 18013.5,
+        "gross_loss_usd": -17984.83,
+        "profit_factor": 1.0016,
+        "average_win_usd": 7.462,
+        "average_loss_usd": -5.482,
+        "expected_payoff_usd": 0.005,
+        "closed_trade_max_drawdown_usd": 969.33,
+        "max_consecutive_losses": 15,
+        "ambiguous_minutes": 0,
+        "cross_utc_date_trades": 133,
+        "exits_after_60_minutes": 132,
+        "exit_reasons": {
+          "target": 1511,
+          "timeout": 1495,
+          "stop": 2658,
+          "stop_gap": 30,
+          "end_of_period": 1
+        }
+      }
+    },
+    "stress": {
+      "config": {
+        "rr": 1.5,
+        "stop_atr": 0.1,
+        "tick": 0.001,
+        "max_spread": 0.5,
+        "max_spread_fraction": 0.1,
+        "max_hold_seconds": 3600,
+        "lots": 0.01,
+        "contract_size": 100,
+        "commission": 0.04,
+        "slippage": 0.15
+      },
+      "periods": {
+        "2025_H1": {
+          "available": true,
+          "observed_start": "2025-01-01T23:05:00Z",
+          "observed_last_minute": "2025-06-30T23:59:00Z",
+          "minutes": 173994,
+          "skips": {
+            "opened": 1617,
+            "position_open": 1544,
+            "spread_to_risk_or_invalid_stop": 89
+          },
+          "summary": {
+            "trades": 1617,
+            "wins": 644,
+            "losses": 973,
+            "win_rate_pct": 39.827,
+            "net_usd": -408.57,
+            "gross_profit_usd": 3065.23,
+            "gross_loss_usd": -3473.79,
+            "profit_factor": 0.8824,
+            "average_win_usd": 4.76,
+            "average_loss_usd": -3.57,
+            "expected_payoff_usd": -0.2527,
+            "closed_trade_max_drawdown_usd": 461.86,
+            "max_consecutive_losses": 15,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 45,
+            "exits_after_60_minutes": 38,
+            "exit_reasons": {
+              "target": 381,
+              "timeout": 475,
+              "stop": 755,
+              "stop_gap": 6
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 960,
+              "wins": 406,
+              "win_rate_pct": 42.292,
+              "net_usd": -187.33,
+              "profit_factor": 0.9014,
+              "closed_trade_max_drawdown_usd": 235.82
+            },
+            "sell": {
+              "trades": 657,
+              "wins": 238,
+              "win_rate_pct": 36.225,
+              "net_usd": -221.24,
+              "profit_factor": 0.8594,
+              "closed_trade_max_drawdown_usd": 259.87
+            }
+          },
+          "by_exit_month": {
+            "2025-01": {
+              "trades": 266,
+              "wins": 114,
+              "win_rate_pct": 42.857,
+              "net_usd": -42.85,
+              "profit_factor": 0.8863,
+              "closed_trade_max_drawdown_usd": 80.04
+            },
+            "2025-02": {
+              "trades": 250,
+              "wins": 98,
+              "win_rate_pct": 39.2,
+              "net_usd": -67.11,
+              "profit_factor": 0.8333,
+              "closed_trade_max_drawdown_usd": 94.81
+            },
+            "2025-03": {
+              "trades": 258,
+              "wins": 87,
+              "win_rate_pct": 33.721,
+              "net_usd": -206.96,
+              "profit_factor": 0.5721,
+              "closed_trade_max_drawdown_usd": 251.23
+            },
+            "2025-04": {
+              "trades": 297,
+              "wins": 127,
+              "win_rate_pct": 42.761,
+              "net_usd": 74.09,
+              "profit_factor": 1.089,
+              "closed_trade_max_drawdown_usd": 90.27
+            },
+            "2025-05": {
+              "trades": 284,
+              "wins": 120,
+              "win_rate_pct": 42.254,
+              "net_usd": -6.82,
+              "profit_factor": 0.9907,
+              "closed_trade_max_drawdown_usd": 117.48
+            },
+            "2025-06": {
+              "trades": 262,
+              "wins": 98,
+              "win_rate_pct": 37.405,
+              "net_usd": -158.92,
+              "profit_factor": 0.7525,
+              "closed_trade_max_drawdown_usd": 175.03
+            }
+          }
+        },
+        "2025_H2": {
+          "available": true,
+          "observed_start": "2025-07-01T00:00:00Z",
+          "observed_last_minute": "2025-12-31T21:57:00Z",
+          "minutes": 179087,
+          "skips": {
+            "opened": 1724,
+            "position_open": 1692,
+            "spread_to_risk_or_invalid_stop": 28,
+            "spread": 6
+          },
+          "summary": {
+            "trades": 1724,
+            "wins": 725,
+            "losses": 999,
+            "win_rate_pct": 42.053,
+            "net_usd": -339.33,
+            "gross_profit_usd": 4278.49,
+            "gross_loss_usd": -4617.82,
+            "profit_factor": 0.9265,
+            "average_win_usd": 5.901,
+            "average_loss_usd": -4.622,
+            "expected_payoff_usd": -0.1968,
+            "closed_trade_max_drawdown_usd": 412.11,
+            "max_consecutive_losses": 13,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 43,
+            "exits_after_60_minutes": 41,
+            "exit_reasons": {
+              "target": 433,
+              "stop": 813,
+              "timeout": 472,
+              "stop_gap": 6
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 1055,
+              "wins": 450,
+              "win_rate_pct": 42.654,
+              "net_usd": -244.36,
+              "profit_factor": 0.9094,
+              "closed_trade_max_drawdown_usd": 344.35
+            },
+            "sell": {
+              "trades": 669,
+              "wins": 275,
+              "win_rate_pct": 41.106,
+              "net_usd": -94.97,
+              "profit_factor": 0.9505,
+              "closed_trade_max_drawdown_usd": 225.24
+            }
+          },
+          "by_exit_month": {
+            "2025-07": {
+              "trades": 295,
+              "wins": 126,
+              "win_rate_pct": 42.712,
+              "net_usd": -27.73,
+              "profit_factor": 0.9412,
+              "closed_trade_max_drawdown_usd": 90.64
+            },
+            "2025-08": {
+              "trades": 277,
+              "wins": 103,
+              "win_rate_pct": 37.184,
+              "net_usd": -142.52,
+              "profit_factor": 0.7145,
+              "closed_trade_max_drawdown_usd": 167.66
+            },
+            "2025-09": {
+              "trades": 275,
+              "wins": 123,
+              "win_rate_pct": 44.727,
+              "net_usd": 12.42,
+              "profit_factor": 1.0216,
+              "closed_trade_max_drawdown_usd": 83.1
+            },
+            "2025-10": {
+              "trades": 313,
+              "wins": 145,
+              "win_rate_pct": 46.326,
+              "net_usd": 102.77,
+              "profit_factor": 1.0844,
+              "closed_trade_max_drawdown_usd": 79.56
+            },
+            "2025-11": {
+              "trades": 269,
+              "wins": 114,
+              "win_rate_pct": 42.379,
+              "net_usd": -95.02,
+              "profit_factor": 0.8951,
+              "closed_trade_max_drawdown_usd": 162.85
+            },
+            "2025-12": {
+              "trades": 295,
+              "wins": 114,
+              "win_rate_pct": 38.644,
+              "net_usd": -189.25,
+              "profit_factor": 0.8005,
+              "closed_trade_max_drawdown_usd": 262.63
+            }
+          }
+        },
+        "2026_Jan_May": {
+          "available": true,
+          "observed_start": "2026-01-01T23:05:00Z",
+          "observed_last_minute": "2026-05-31T23:59:00Z",
+          "minutes": 144185,
+          "skips": {
+            "opened": 1438,
+            "position_open": 1345,
+            "spread_to_risk_or_invalid_stop": 8
+          },
+          "summary": {
+            "trades": 1438,
+            "wins": 596,
+            "losses": 842,
+            "win_rate_pct": 41.446,
+            "net_usd": -88.54,
+            "gross_profit_usd": 7222.63,
+            "gross_loss_usd": -7311.17,
+            "profit_factor": 0.9879,
+            "average_win_usd": 12.119,
+            "average_loss_usd": -8.683,
+            "expected_payoff_usd": -0.0616,
+            "closed_trade_max_drawdown_usd": 977.68,
+            "max_consecutive_losses": 12,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 27,
+            "exits_after_60_minutes": 38,
+            "exit_reasons": {
+              "timeout": 366,
+              "target": 385,
+              "stop": 673,
+              "stop_gap": 13,
+              "end_of_period": 1
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 730,
+              "wins": 305,
+              "win_rate_pct": 41.781,
+              "net_usd": -184.61,
+              "profit_factor": 0.945,
+              "closed_trade_max_drawdown_usd": 554.55
+            },
+            "sell": {
+              "trades": 708,
+              "wins": 291,
+              "win_rate_pct": 41.102,
+              "net_usd": 96.07,
+              "profit_factor": 1.0243,
+              "closed_trade_max_drawdown_usd": 503.83
+            }
+          },
+          "by_exit_month": {
+            "2026-01": {
+              "trades": 292,
+              "wins": 140,
+              "win_rate_pct": 47.945,
+              "net_usd": 643.93,
+              "profit_factor": 1.6115,
+              "closed_trade_max_drawdown_usd": 163.32
+            },
+            "2026-02": {
+              "trades": 268,
+              "wins": 106,
+              "win_rate_pct": 39.552,
+              "net_usd": -207.51,
+              "profit_factor": 0.8861,
+              "closed_trade_max_drawdown_usd": 413.81
+            },
+            "2026-03": {
+              "trades": 298,
+              "wins": 120,
+              "win_rate_pct": 40.268,
+              "net_usd": -232.17,
+              "profit_factor": 0.8787,
+              "closed_trade_max_drawdown_usd": 380.22
+            },
+            "2026-04": {
+              "trades": 281,
+              "wins": 107,
+              "win_rate_pct": 38.078,
+              "net_usd": -149.96,
+              "profit_factor": 0.8872,
+              "closed_trade_max_drawdown_usd": 308.12
+            },
+            "2026-05": {
+              "trades": 299,
+              "wins": 123,
+              "win_rate_pct": 41.137,
+              "net_usd": -142.82,
+              "profit_factor": 0.8801,
+              "closed_trade_max_drawdown_usd": 198.94
+            }
+          }
+        },
+        "2026_Jun_Aug": {
+          "available": true,
+          "observed_start": "2026-06-01T00:00:00Z",
+          "observed_last_minute": "2026-08-31T23:59:00Z",
+          "minutes": 90454,
+          "skips": {
+            "opened": 894,
+            "position_open": 872,
+            "spread_to_risk_or_invalid_stop": 19
+          },
+          "summary": {
+            "trades": 894,
+            "wins": 364,
+            "losses": 530,
+            "win_rate_pct": 40.716,
+            "net_usd": -212.62,
+            "gross_profit_usd": 3081.56,
+            "gross_loss_usd": -3294.18,
+            "profit_factor": 0.9355,
+            "average_win_usd": 8.466,
+            "average_loss_usd": -6.215,
+            "expected_payoff_usd": -0.2378,
+            "closed_trade_max_drawdown_usd": 351.77,
+            "max_consecutive_losses": 12,
+            "ambiguous_minutes": 0,
+            "cross_utc_date_trades": 20,
+            "exits_after_60_minutes": 18,
+            "exit_reasons": {
+              "stop": 434,
+              "target": 223,
+              "timeout": 230,
+              "stop_gap": 6,
+              "end_of_period": 1
+            }
+          },
+          "by_side": {
+            "buy": {
+              "trades": 419,
+              "wins": 168,
+              "win_rate_pct": 40.095,
+              "net_usd": -138.09,
+              "profit_factor": 0.9104,
+              "closed_trade_max_drawdown_usd": 288.37
+            },
+            "sell": {
+              "trades": 475,
+              "wins": 196,
+              "win_rate_pct": 41.263,
+              "net_usd": -74.53,
+              "profit_factor": 0.9575,
+              "closed_trade_max_drawdown_usd": 318.08
+            }
+          },
+          "by_exit_month": {
+            "2026-06": {
+              "trades": 306,
+              "wins": 127,
+              "win_rate_pct": 41.503,
+              "net_usd": -30.11,
+              "profit_factor": 0.9759,
+              "closed_trade_max_drawdown_usd": 113.25
+            },
+            "2026-07": {
+              "trades": 311,
+              "wins": 118,
+              "win_rate_pct": 37.942,
+              "net_usd": -151.98,
+              "profit_factor": 0.8539,
+              "closed_trade_max_drawdown_usd": 235.74
+            },
+            "2026-08": {
+              "trades": 277,
+              "wins": 119,
+              "win_rate_pct": 42.96,
+              "net_usd": -30.53,
+              "profit_factor": 0.9696,
+              "closed_trade_max_drawdown_usd": 221.05
+            }
+          }
+        }
+      },
+      "combined_summary": {
+        "trades": 5673,
+        "wins": 2329,
+        "losses": 3344,
+        "win_rate_pct": 41.054,
+        "net_usd": -1049.06,
+        "gross_profit_usd": 17647.9,
+        "gross_loss_usd": -18696.96,
+        "profit_factor": 0.9439,
+        "average_win_usd": 7.577,
+        "average_loss_usd": -5.591,
+        "expected_payoff_usd": -0.1849,
+        "closed_trade_max_drawdown_usd": 1267.26,
+        "max_consecutive_losses": 15,
+        "ambiguous_minutes": 0,
+        "cross_utc_date_trades": 135,
+        "exits_after_60_minutes": 135,
+        "exit_reasons": {
+          "target": 1422,
+          "timeout": 1543,
+          "stop": 2675,
+          "stop_gap": 31,
+          "end_of_period": 2
+        }
+      }
+    }
+  },
+  "data_source": {
+    "name": "Exness public indicative XAUUSD (no suffix) tick archive",
+    "reference": "https://www.exness.com/tick-history/",
+    "warmup_month": "2024-12",
+    "evaluated_months": "2025-01 through 2026-08",
+    "structurally_verified_months": 21,
+    "coverage_limitations": "CRC/schema/order/quote/SHA256 checks do not independently establish upstream tick completeness or exact MT5Trial7 coverage.",
+    "ticks_including_warmup": 147524553,
+    "minutes_including_warmup": 616216,
+    "months": [
+      {
+        "month": "2024-12",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2024/12/Exness_XAUUSD_2024_12.zip",
+        "ticks": 3270565,
+        "minutes": 28496,
+        "first_tick": "2024-12-01 23:05:00.176Z",
+        "last_tick": "2024-12-31 21:57:57.765Z",
+        "csv_sha256": "f25cd7ed9d318b76a0498baf0efd8ce7fdb82ee262849c915fd5ff4864a9a8fe",
+        "zip_sha256": "e8b05c08afa9ce62f7b5ec0fdbab46a5a833c6b1cbfe9a8d63eb1fb0ad85ec95"
+      },
+      {
+        "month": "2025-01",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/01/Exness_XAUUSD_2025_01.zip",
+        "ticks": 4587429,
+        "minutes": 30019,
+        "first_tick": "2025-01-01 23:05:07.735Z",
+        "last_tick": "2025-01-31 21:57:57.232Z",
+        "csv_sha256": "2ba2f0329ce160fc92058b3479d567082f65134b29d605aeccf9a3b1a1092484",
+        "zip_sha256": "6282b0ea0e2fa76e7887d5b970c3faafe1d6912367c112e13658446248ed10a7"
+      },
+      {
+        "month": "2025-02",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/02/Exness_XAUUSD_2025_02.zip",
+        "ticks": 5126011,
+        "minutes": 27351,
+        "first_tick": "2025-02-02 23:05:23.216Z",
+        "last_tick": "2025-02-28 21:57:59.041Z",
+        "csv_sha256": "bf31b9507647c3c2c65a414d891f6ed7f38156e8fb996d6916770e8c6d9e8252",
+        "zip_sha256": "5ddb3fca1c3a5a9ecc33e86f6751100da4f01c413596b128a20461b80e98ed28"
+      },
+      {
+        "month": "2025-03",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/03/Exness_XAUUSD_2025_03.zip",
+        "ticks": 4385344,
+        "minutes": 29013,
+        "first_tick": "2025-03-02 23:05:00.016Z",
+        "last_tick": "2025-03-31 23:59:58.751Z",
+        "csv_sha256": "863e46f4e5045737ee7433a591ee52fcbfa8cd29c483510c0f1e68fca359ac42",
+        "zip_sha256": "847951520774be8d22418b0beb7b6ae5e43be52496d4804e1063e3cf2a94ae44"
+      },
+      {
+        "month": "2025-04",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/04/Exness_XAUUSD_2025_04.zip",
+        "ticks": 7867193,
+        "minutes": 28847,
+        "first_tick": "2025-04-01 00:00:00.016Z",
+        "last_tick": "2025-04-30 23:59:59.566Z",
+        "csv_sha256": "06a11fbaf79e15a2fa69714e3795041ca81a87e1661593b7cd43a0ece9ed7eb9",
+        "zip_sha256": "f31cd83857c28dd509c69943c004e8c731eaa9b96220da21b483c91a864a8ef9"
+      },
+      {
+        "month": "2025-05",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/05/Exness_XAUUSD_2025_05.zip",
+        "ticks": 6576398,
+        "minutes": 29984,
+        "first_tick": "2025-05-01 00:00:00.043Z",
+        "last_tick": "2025-05-30 20:57:58.136Z",
+        "csv_sha256": "12946772d444531f33735337e375a73e8cf1b87b522d8cb3ff92dff257daddbf",
+        "zip_sha256": "fe39a567b656da3fe89f7bde2e343261378f9c8a7c877c544dbf9acb4d79676a"
+      },
+      {
+        "month": "2025-06",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/06/Exness_XAUUSD_2025_06.zip",
+        "ticks": 5158150,
+        "minutes": 28780,
+        "first_tick": "2025-06-01 22:05:00.054Z",
+        "last_tick": "2025-06-30 23:59:59.179Z",
+        "csv_sha256": "e33f9a0b4108e44b7a94b3016a052031028edc1e1930ebe79ad107755bf92715",
+        "zip_sha256": "d8c95f93116da6d88dadbe16566dca57622efb21a249e67f8a4405ad18b57b26"
+      },
+      {
+        "month": "2025-07",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/07/Exness_XAUUSD_2025_07.zip",
+        "ticks": 4161536,
+        "minutes": 31383,
+        "first_tick": "2025-07-01 00:00:00.233Z",
+        "last_tick": "2025-07-31 23:59:59.625Z",
+        "csv_sha256": "8949c657911f07181f241039ac229ba4bc9b817b694be60552dd5b2b906d8ce2",
+        "zip_sha256": "2c63b0ec490bdbb4d220267292da1ecabb6bc5b3ae372cec4c057848d35f9adc"
+      },
+      {
+        "month": "2025-08",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/08/Exness_XAUUSD_2025_08.zip",
+        "ticks": 3619594,
+        "minutes": 28881,
+        "first_tick": "2025-08-01 00:00:00.332Z",
+        "last_tick": "2025-08-31 23:59:59.467Z",
+        "csv_sha256": "d65751256f2a9ef810590402982203219ed526d626dbd974f00309fdc4e7f44e",
+        "zip_sha256": "82bbe66dac095bcc07b1a01f21c1ea73ec8e9a50981f39403c32357df39d948a"
+      },
+      {
+        "month": "2025-09",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/09/Exness_XAUUSD_2025_09.zip",
+        "ticks": 5232883,
+        "minutes": 30096,
+        "first_tick": "2025-09-01 00:00:00.071Z",
+        "last_tick": "2025-09-30 23:59:58.964Z",
+        "csv_sha256": "254b36dab6d99df0246636373688ca4c62df3c919c0dc38363fa5de26dc2be5f",
+        "zip_sha256": "d60820bf200e675a0a370156e4eadd2454d217551bb716060397d54f957f6443"
+      },
+      {
+        "month": "2025-10",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/10/Exness_XAUUSD_2025_10.zip",
+        "ticks": 12491167,
+        "minutes": 31518,
+        "first_tick": "2025-10-01 00:00:00.009Z",
+        "last_tick": "2025-10-31 20:57:56.706Z",
+        "csv_sha256": "b4f26b9c80b643c05be322742a89e8f1724442ed136849986f5cdcb42caec887",
+        "zip_sha256": "21addd55a901b2b5938568ff5017226f4c0f34ba533d278ed1d974124306b55f"
+      },
+      {
+        "month": "2025-11",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/11/Exness_XAUUSD_2025_11.zip",
+        "ticks": 8106671,
+        "minutes": 27227,
+        "first_tick": "2025-11-02 23:01:30.015Z",
+        "last_tick": "2025-11-28 19:44:58.942Z",
+        "csv_sha256": "10b928d553ccdbfdb9791efc55b694ced6be0efb9ccc32c3aebc26b933602cc5",
+        "zip_sha256": "e7034c50be966adcce62c9f4b19ef81ce5b1955a6053d0318128863e423c3499"
+      },
+      {
+        "month": "2025-12",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2025/12/Exness_XAUUSD_2025_12.zip",
+        "ticks": 8971097,
+        "minutes": 29982,
+        "first_tick": "2025-12-01 00:00:30.014Z",
+        "last_tick": "2025-12-31 21:57:58.899Z",
+        "csv_sha256": "abfd1087506022d4a56908498dafbabb160e2d8827dd097d1bd793c9483f903b",
+        "zip_sha256": "6dd074d0a44cb36b8a69462d1d5a08181b18193eef6a680f0307b3081320cd40"
+      },
+      {
+        "month": "2026-01",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/01/Exness_XAUUSD_2026_01.zip",
+        "ticks": 13431248,
+        "minutes": 28729,
+        "first_tick": "2026-01-01 23:05:00.140Z",
+        "last_tick": "2026-01-30 21:57:58.956Z",
+        "csv_sha256": "9aef832e37a753e4c0a754611827fa5ff79c078332326e4673f9887a7710179b",
+        "zip_sha256": "2f702ce91ede2dda42cad8973ca499f57e49ea5984a219ae3916913ff66989d2"
+      },
+      {
+        "month": "2026-02",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/02/Exness_XAUUSD_2026_02.zip",
+        "ticks": 8007918,
+        "minutes": 27379,
+        "first_tick": "2026-02-01 23:01:38.386Z",
+        "last_tick": "2026-02-27 21:57:58.175Z",
+        "csv_sha256": "76c8b333018a52f52802d8e53985d08597236ecc84e8d929384bb12cc1a7dc08",
+        "zip_sha256": "41e027a4cdae257dc3adfc97eadc35570423e1e7cf18f1740c1f1e66452edc46"
+      },
+      {
+        "month": "2026-03",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/03/Exness_XAUUSD_2026_03.zip",
+        "ticks": 12360577,
+        "minutes": 30406,
+        "first_tick": "2026-03-01 23:01:31.764Z",
+        "last_tick": "2026-03-31 23:59:59.813Z",
+        "csv_sha256": "9db9fa2f5bca514e711f5b28e58be362046367cf4cfb4c56595f28a6a372433a",
+        "zip_sha256": "9645374633bbfaaa9e67afea63f9af414a1e55c6deb0a10af57e9275b1502957"
+      },
+      {
+        "month": "2026-04",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/04/Exness_XAUUSD_2026_04.zip",
+        "ticks": 6875951,
+        "minutes": 28898,
+        "first_tick": "2026-04-01 00:00:00.060Z",
+        "last_tick": "2026-04-30 23:59:59.436Z",
+        "csv_sha256": "76a5ef48a5e143c944f709bcb15c4f2f049a14feb49080164a8e32df6be2765f",
+        "zip_sha256": "d38044a25462cc7aa53835e8ae21e36f5422da668ef3dbc0bd283562478abf2b"
+      },
+      {
+        "month": "2026-05",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/05/Exness_XAUUSD_2026_05.zip",
+        "ticks": 6023835,
+        "minutes": 28773,
+        "first_tick": "2026-05-01 00:00:00.016Z",
+        "last_tick": "2026-05-31 23:59:59.713Z",
+        "csv_sha256": "2c766784124b5dfd0396eb5a6fa259f039fb42561a88ccc4d4f5466a79a6fe85",
+        "zip_sha256": "bac2794939e0ce8e3264f11086f618296c78740c91293a8b318e78a517fd05b0"
+      },
+      {
+        "month": "2026-06",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/06/Exness_XAUUSD_2026_06.zip",
+        "ticks": 8038574,
+        "minutes": 30073,
+        "first_tick": "2026-06-01 00:00:00.076Z",
+        "last_tick": "2026-06-30 23:59:59.665Z",
+        "csv_sha256": "5e39ed7dcbbf9d8a723998acf9da63e29355c2a63eb9fdd5fc7928df0771eb60",
+        "zip_sha256": "a75d0f056e3b9f731b23102d20ac2bcee212955ae42b671d7065ace06020de58"
+      },
+      {
+        "month": "2026-07",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/07/Exness_XAUUSD_2026_07.zip",
+        "ticks": 6739207,
+        "minutes": 31332,
+        "first_tick": "2026-07-01 00:00:00.278Z",
+        "last_tick": "2026-07-31 20:57:59.698Z",
+        "csv_sha256": "db93ba4e332945e69073c835985e8bdad87111b9bee0d554f9203809b87766c5",
+        "zip_sha256": "8e006304aefe1041e5dff33b32802c1d2bce8f818f19683f9b51a4142a5b1fd3"
+      },
+      {
+        "month": "2026-08",
+        "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/08/Exness_XAUUSD_2026_08.zip",
+        "ticks": 6493205,
+        "minutes": 29049,
+        "first_tick": "2026-08-02 22:01:30.645Z",
+        "last_tick": "2026-08-31 23:59:59.806Z",
+        "csv_sha256": "4bcf1b0bb380bd74a4c7ac7b2691bfa6e7ec150df9f595314037ef94329d2962",
+        "zip_sha256": "f20f46fe2e793e263b7df4889ff32e192c08da3c48da7409f65cca1f768172dc"
+      }
+    ]
+  },
+  "verdict": "Not validated for live trading; no evidence of 80% win rate. Near flat before swaps in base case; every period loses in stress scenario."
+}

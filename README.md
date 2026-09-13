@@ -1,5 +1,13 @@
 # Momentum Candle XAU — Expert Advisor MT5
 
+## Kandidat baru: Trend Pullback XAU
+
+EA eksperimen terpisah tersedia di **[`TrendPullbackXAU.mq5`](Experts/TrendPullbackXAU/TrendPullbackXAU.mq5)**: satu file, XAUUSD **M5**, filter tren M15, entry market setelah pullback, lot tetap **0,01**, RR **1:1,5**, dan timeout default **60 menit**. [Panduan pemasangan dan aturan](Experts/TrendPullbackXAU/README.md) · [Metode riset candle historis](research/README.md).
+
+Ini kandidat untuk diuji, **bukan strategi yang telah terbukti lebih baik atau memiliki win rate 80%**. Jangan jalankan bersama EA momentum pada simbol yang sama. Versi momentum di bawah tetap dipertahankan tanpa perubahan.
+
+**[Hasil penelitian](research/RESULTS.md):** proxy OHLC dari arsip publik Exness menghasilkan win rate **42,39%** dan hampir impas sebelum swap pada asumsi dasar; skenario slippage lebih buruk merugi. Kandidat ini **belum layak live** dan belum dikompilasi/backtest melalui MT5 di workspace ini.
+
 **Versi 1.03: langsung entry market setelah candle momentum tutup, RR default 1:1, lot tetap 0,01.** Khusus XAUUSD M5/M15, berdasarkan indikator Pine “Momentum Candle Sekolah Trading”. Tidak ada lagi Buy Stop/Sell Stop atau syarat breakout. Ini perubahan aturan untuk diuji, **bukan klaim peningkatan win rate atau profit**.
 
 ## Satu file dan pemasangan
