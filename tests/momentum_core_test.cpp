@@ -61,21 +61,46 @@ int main()
     check(!MomentumSignal(108, 110, 100, 101, 7, 30, true, buy), "opposite bearish wick direction");
 
     double entry = 0, sl = 0, tp = 0;
-    check(!MomentumLevels(true, 3006, 2999, nan, .3, .01, .1, .15, 2, entry, sl, tp), "reject NaN ATR");
-    check(!MomentumLevels(true, 3006, 2999, 5, .3, .01, .1, .15, inf, entry, sl, tp), "reject infinite RR");
-    check(MomentumLevels(true, 3006, 2999, 5, .3, .01, .1, .15, 2, entry, sl, tp),
-          "buy levels valid");
-    check(near(entry, 3006.8) && near(sl, 2998.25) && near(tp, 3023.9), "buy prices");
-    check(MomentumLevels(false, 3006, 2999, 5, .3, .01, .1, .15, 2, entry, sl, tp),
-          "sell levels valid");
-    check(near(entry, 2998.5) && near(sl, 3007.05) && near(tp, 2981.4), "sell prices");
-    check(MomentumLevels(true, 3006, 2999, 5, 0, .25, 0, 0, 2, entry, sl, tp),
-          "minimum one-tick buffers");
-    check(near(entry, 3006.25) && near(sl, 2998.75), "zero buffers still outside candle");
-    check(!MomentumLevels(true, 3006, 2999, 0, .3, .01, .1, .15, 2, entry, sl, tp), "zero ATR");
-    check(!MomentumLevels(true, 3006, 2999, 5, -.3, .01, .1, .15, 2, entry, sl, tp), "negative spread");
-    check(!MomentumLevels(true, 3006, 2999, 5, .3, 0, .1, .15, 2, entry, sl, tp), "zero tick");
-    check(!MomentumLevels(true, 2999, 3006, 5, .3, .01, .1, .15, 2, entry, sl, tp), "reversed range");
+    check(!MarketLevels(true, 3006, 2999, nan, 3005.5, 3005.8, .01, .15, 1, entry, sl, tp), "reject NaN ATR");
+    check(!MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.8, .01, .15, inf, entry, sl, tp), "reject infinite RR");
+    check(MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.8, .01, .15, 1, entry, sl, tp),
+          "market buy below signal high without breakout");
+    check(near(entry, 3005.8) && near(sl, 2998.25) && near(tp, 3013.35), "buy Ask and RR 1:1");
+    check(MarketStopsValid(true, 3005.5, 3005.8, sl, tp, .1), "buy stops validated against Bid");
+    check(TargetFromEntry(true, 3005.9, sl, .01, 1, tp) && near(tp, 3013.55),
+          "buy TP realigned after fill slippage, same SL");
+    check(MarketLevels(false, 3006, 2999, 5, 3000, 3000.3, .01, .15, 1, entry, sl, tp),
+          "market sell above signal low without breakout");
+    check(near(entry, 3000) && near(sl, 3007.05) && near(tp, 2992.95), "sell Bid and RR 1:1");
+    check(MarketStopsValid(false, 3000, 3000.3, sl, tp, .1), "sell stops validated against Ask");
+    check(TargetFromEntry(false, 2999.9, sl, .01, 1, tp) && near(tp, 2992.75),
+          "sell TP realigned after fill slippage, same SL");
+    check(MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.5, .25, 0, 1, entry, sl, tp),
+          "zero spread and minimum one-tick SL buffer");
+    check(near(entry, 3005.5) && near(sl, 2998.75), "SL remains outside candle");
+    check(!MarketLevels(true, 3006, 2999, 0, 3005.5, 3005.8, .01, .15, 1, entry, sl, tp), "zero ATR");
+    check(!MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.4, .01, .15, 1, entry, sl, tp), "crossed quote");
+    check(!MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.8, 0, .15, 1, entry, sl, tp), "zero tick");
+    check(!MarketLevels(true, 2999, 3006, 5, 3005.5, 3005.8, .01, .15, 1, entry, sl, tp), "reversed range");
+    check(!MarketLevels(true, 3006, 2999, 5, nan, 3005.8, .01, .15, 1, entry, sl, tp), "NaN bid");
+    check(!MarketLevels(true, 3006, 2999, 5, 3005.5, inf, .01, .15, 1, entry, sl, tp), "infinite ask");
+    check(!MarketLevels(true, 3006, 2999, 5, 3005.5, 3005.8, .01, -.15, 1, entry, sl, tp), "negative stop buffer");
+    check(!MarketLevels(true, 3006, 2999, 5, 2998, 2998.1, .01, .15, 1, entry, sl, tp), "buy gap beyond SL");
+    check(!MarketLevels(false, 3006, 2999, 5, 3008, 3008.1, .01, .15, 1, entry, sl, tp), "sell gap beyond SL");
+    check(!TargetFromEntry(true, 3000, 3000, .01, 1, tp), "zero risk fill rejected");
+    check(!TargetFromEntry(true, 3000, 3001, .01, 1, tp), "buy fill below SL rejected");
+    check(!TargetFromEntry(false, 3000, 2999, .01, 1, tp), "sell fill above SL rejected");
+    check(!TargetFromEntry(true, nan, 2995, .01, 1, tp), "NaN fill rejected");
+    check(!TargetFromEntry(true, 3000, 2995, .01, 0, tp), "zero RR rejected");
+    check(!TargetFromEntry(false, 1, 10, .01, 1, tp), "nonpositive target rejected");
+    check(MarketStopsValid(true, 100, 100.5, 99, 101, 1), "inclusive buy stop distance");
+    check(!MarketStopsValid(true, 100, 100.5, 99.5, 101.5, 1), "buy SL distance uses Bid, not entry Ask");
+    check(!MarketStopsValid(false, 100, 100.5, 101, 99, 1), "sell SL distance uses Ask, not entry Bid");
+    check(!MarketStopsValid(true, 100, 100.5, 95, 100.5, 1), "TP near Bid prevents modification");
+    check(!MarketStopsValid(false, 100, 100.5, 105, 100, 1), "TP near Ask prevents modification");
+    check(!MarketStopsValid(true, 100, 100.5, 99, 101, 2), "freeze distance blocks modification");
+    check(!MarketStopsValid(true, 100, 100.5, 99, 101, nan), "NaN stop distance rejected");
+    check(!MarketStopsValid(true, 100, 99.5, 99, 101, 1), "crossed quote rejected for stops");
 
     check(FixedVolume(.01, .01, 100, .01) == .01, "fixed 0.01 lot exactly");
     check(FixedVolume(.01, .001, 100, .001) == .01, "three-decimal broker step");
@@ -108,15 +133,22 @@ int main()
         const double atr = 1 + 20 * unit(random);
         const double spread = unit(random);
         const double tick = ticks[i % 5];
-        const double rr = 1 + 3 * unit(random);
-        check(MomentumLevels(direction, high, low, atr, spread, tick, .1, .15, rr, entry, sl, tp),
+        const double rr = i % 2 == 0 ? 1 : 1 + 3 * unit(random);
+        const double bid = low + (high - low) * .5;
+        const double ask = bid + spread;
+        check(MarketLevels(direction, high, low, atr, bid, ask, tick, .15, rr, entry, sl, tp),
               "randomized valid levels");
-        check(direction ? (entry > high + spread && sl < low && tp > entry)
-                        : (entry < low && sl > high + spread && tp < entry),
-              "prices outside signal with spread allowance");
+        check(entry == (direction ? ask : bid), "entry is current market quote, not breakout level");
+        check(direction ? (sl < low && tp > entry) : (sl > high + spread && tp < entry),
+              "SL outside signal with spread allowance");
         check(std::abs(tp - entry) + 1e-7 >= rr * std::abs(entry - sl), "rounded reward/risk floor");
-        for (double price : {entry, sl, tp})
+        check(std::abs(tp - entry) - rr * std::abs(entry - sl) < tick + 1e-7, "RR rounding within one tick");
+        for (double price : {sl, tp})
             check(std::abs(price / tick - std::round(price / tick)) < 1e-7, "tick grid");
+        const double fill = entry + (unit(random) - .5) * .1;
+        check(TargetFromEntry(direction, fill, sl, tick, rr, tp), "actual fill target valid");
+        check(std::abs(tp - fill) + 1e-7 >= rr * std::abs(fill - sl), "target uses actual fill");
+        check(std::abs(tp - fill) - rr * std::abs(fill - sl) < tick + 1e-7, "actual fill RR within one tick");
 
         const double step = steps[i % 4];
         const double requested = NormalizeDouble((1 + i % 100) * step, 8);

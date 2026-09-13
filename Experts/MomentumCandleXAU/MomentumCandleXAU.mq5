@@ -1,8 +1,8 @@
 #ifndef MOMENTUM_CORE_TEST
 #property copyright "Momentum Candle XAU"
-#property version   "1.02"
+#property version   "1.03"
 #property strict
-#property description "Closed-bar XAUUSD M5/M15 momentum breakout. Demo-test before live use."
+#property description "XAUUSD M5/M15 market entry after momentum close, default RR 1:1 and 0.01 lots."
 
 #include <Trade\Trade.mqh>
 #endif
@@ -42,38 +42,47 @@ double PriceDown(const double price, const double tick)
    return MathFloor(price / tick + 1e-9) * tick;
 }
 
-bool MomentumLevels(const bool buy, const double high, const double low,
-                    const double atr, const double spread, const double tick,
-                    const double entry_atr, const double stop_atr,
-                    const double reward_risk,
-                    double &entry, double &sl, double &tp)
+bool TargetFromEntry(const bool buy, const double entry, const double sl,
+                     const double tick, const double reward_risk, double &tp)
+{
+   if(!MathIsValidNumber(entry) || !MathIsValidNumber(sl) || !MathIsValidNumber(tick) ||
+      !MathIsValidNumber(reward_risk) || entry <= 0 || sl <= 0 || tick <= 0 || reward_risk <= 0)
+      return false;
+   const double risk = buy ? entry - sl : sl - entry;
+   if(risk <= 0)
+      return false;
+   tp = buy ? PriceUp(entry + reward_risk * risk, tick)
+            : PriceDown(entry - reward_risk * risk, tick);
+   return MathIsValidNumber(tp) && tp > 0 && (buy ? tp > entry : tp < entry);
+}
+
+bool MarketLevels(const bool buy, const double high, const double low,
+                  const double atr, const double bid, const double ask, const double tick,
+                  const double stop_atr, const double reward_risk,
+                  double &entry, double &sl, double &tp)
 {
    if(!MathIsValidNumber(high) || !MathIsValidNumber(low) || !MathIsValidNumber(atr) ||
-      !MathIsValidNumber(spread) || !MathIsValidNumber(tick) || !MathIsValidNumber(entry_atr) ||
-      !MathIsValidNumber(stop_atr) || !MathIsValidNumber(reward_risk))
+      !MathIsValidNumber(bid) || !MathIsValidNumber(ask) || !MathIsValidNumber(tick) ||
+      !MathIsValidNumber(stop_atr) || high <= low || low <= 0 || atr <= 0 ||
+      bid <= 0 || ask < bid || tick <= 0 || stop_atr < 0)
       return false;
-   if(high <= low || low <= 0.0 || atr <= 0.0 || spread < 0.0 ||
-      tick <= 0.0 || entry_atr < 0.0 || stop_atr < 0.0 || reward_risk <= 0.0)
-      return false;
-
-   const double entry_buffer = MathMax(atr * entry_atr, tick);
+   const double spread = ask - bid;
    const double stop_buffer = MathMax(atr * stop_atr, tick);
-   // MT5 gold candles use Bid; buy triggers and short exits use Ask.
-   if(buy)
-   {
-      entry = PriceUp(high + entry_buffer + spread, tick);
-      sl = PriceDown(low - stop_buffer, tick);
-      tp = PriceUp(entry + reward_risk * (entry - sl), tick);
-   }
-   else
-   {
-      entry = PriceDown(low - entry_buffer, tick);
-      sl = PriceUp(high + stop_buffer + spread, tick);
-      tp = PriceDown(entry - reward_risk * (sl - entry), tick);
-   }
-   return MathIsValidNumber(entry) && MathIsValidNumber(sl) && MathIsValidNumber(tp) &&
-          entry > 0.0 && sl > 0.0 && tp > 0.0 &&
-          (buy ? (sl < entry && tp > entry) : (tp < entry && sl > entry));
+   // Candle OHLC uses Bid; market buys and short exits use Ask.
+   entry = buy ? ask : bid;
+   sl = buy ? PriceDown(low - stop_buffer, tick) : PriceUp(high + stop_buffer + spread, tick);
+   return TargetFromEntry(buy, entry, sl, tick, reward_risk, tp);
+}
+
+bool MarketStopsValid(const bool buy, const double bid, const double ask,
+                      const double sl, const double tp, const double distance)
+{
+   if(!MathIsValidNumber(bid) || !MathIsValidNumber(ask) || !MathIsValidNumber(sl) ||
+      !MathIsValidNumber(tp) || !MathIsValidNumber(distance) || bid <= 0 || ask < bid ||
+      sl <= 0 || tp <= 0 || distance <= 0)
+      return false;
+   return buy ? bid - sl >= distance && tp - bid >= distance
+              : sl - ask >= distance && ask - tp >= distance;
 }
 
 double FixedVolume(const double requested, const double min_lot,
@@ -115,21 +124,23 @@ input int             InpATRPeriod = 14;
 input double          InpMaxCandleATR = 2.5;
 
 input group "Entry / stop / target"
-input double InpEntryBufferATR = 0.10;
 input double InpSLBufferATR = 0.15;
-input double InpRewardRisk = 2.0;
-input int    InpPendingBars = 3;
+input double InpRewardRisk = 1.0;
 input int    InpMaxSignalDelaySeconds = 30;
 
 input group "Fixed lot and execution"
 input double InpFixedLots = 0.01;
 input double InpMaxSpreadPrice = 0.50;
+input ulong  InpDeviationPoints = 50;
 input ulong  InpMagic = 26091301;
 
 CTrade trade;
 int atr_handle = INVALID_HANDLE;
 int ema_handle = INVALID_HANDLE;
 datetime last_processed_bar = 0;
+datetime last_target_sync = 0;
+bool target_warning = false;
+const string MARKET_COMMENT = "MomentumXAU_Market";
 
 void ReleaseIndicators()
 {
@@ -158,8 +169,8 @@ int OnInit()
       InpMaxWickPct <= 0 || InpMaxWickPct >= 100 ||
       InpConsolidationBars < 1 || InpConsolidationBars > 10 ||
       InpEMAPeriod < 1 || InpATRPeriod < 1 || InpMaxCandleATR <= 0 ||
-      InpEntryBufferATR < 0 || InpSLBufferATR < 0 || InpRewardRisk < 1 ||
-      InpPendingBars < 1 || InpPendingBars > 100 ||
+      !MathIsValidNumber(InpSLBufferATR) || InpSLBufferATR < 0 ||
+      !MathIsValidNumber(InpRewardRisk) || InpRewardRisk < 1 ||
       InpMaxSignalDelaySeconds < 1 ||
       InpMaxSignalDelaySeconds >= PeriodSeconds(_Period) ||
       !MathIsValidNumber(InpFixedLots) || InpFixedLots <= 0 ||
@@ -179,13 +190,18 @@ int OnInit()
    }
 
    const long modes = SymbolInfoInteger(_Symbol, SYMBOL_ORDER_MODE);
-   const long expiry = SymbolInfoInteger(_Symbol, SYMBOL_EXPIRATION_MODE);
-   if((modes & SYMBOL_ORDER_STOP) == 0 || (modes & SYMBOL_ORDER_SL) == 0 ||
-      (modes & SYMBOL_ORDER_TP) == 0 || (expiry & SYMBOL_EXPIRATION_SPECIFIED) == 0 ||
+   if((modes & SYMBOL_ORDER_MARKET) == 0 || (modes & SYMBOL_ORDER_SL) == 0 ||
+      (modes & SYMBOL_ORDER_TP) == 0 ||
       SymbolInfoInteger(_Symbol, SYMBOL_CHART_MODE) != SYMBOL_CHART_MODE_BID ||
       SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE) <= 0)
    {
-      Print("Broker must support Bid candles, stop orders, SL/TP and server-side specified expiry.");
+      Print("Broker must support Bid candles, market orders and attached SL/TP.");
+      return INIT_FAILED;
+   }
+
+   if(!trade.SetTypeFillingBySymbol(_Symbol))
+   {
+      Print("Cannot determine a supported market filling policy.");
       return INIT_FAILED;
    }
 
@@ -200,11 +216,11 @@ int OnInit()
 
    trade.SetExpertMagicNumber(InpMagic);
    trade.SetAsyncMode(false);
-   // Pending orders require RETURN independently of the market filling mode.
-   trade.SetTypeFilling(ORDER_FILLING_RETURN);
+   trade.SetDeviationInPoints(InpDeviationPoints);
    trade.SetMarginMode();
    last_processed_bar = iTime(_Symbol, _Period, 0);
-   PrintFormat("Ready. Fixed lots=%.8f, no equity-based sizing. Waiting for next closed candle.", InpFixedLots);
+   PrintFormat("Ready. MARKET after candle close; RR=1:%.2f; fixed lots=%.8f. Waiting for next closed candle.",
+               InpRewardRisk, InpFixedLots);
    return INIT_SUCCEEDED;
 }
 
@@ -245,14 +261,87 @@ bool TradingAllowed(const bool buy)
           (!buy && mode == SYMBOL_TRADE_MODE_SHORTONLY);
 }
 
-void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
-                  const datetime bar_open)
+void WarnTargetOnce(const string message)
+{
+   if(!target_warning)
+      Print("TP alignment pending: ", message, ". Current broker SL/TP unchanged; check Journal.");
+   target_warning = true;
+}
+
+void AlignTakeProfit()
+{
+   const datetime now = TimeCurrent();
+   if(now == last_target_sync)
+      return;
+   last_target_sync = now;
+   bool found = false;
+   for(int i = PositionsTotal() - 1; i >= 0; --i)
+   {
+      const ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || PositionGetString(POSITION_SYMBOL) != _Symbol ||
+         (ulong)PositionGetInteger(POSITION_MAGIC) != InpMagic ||
+         PositionGetString(POSITION_COMMENT) != MARKET_COMMENT)
+         continue;
+      found = true;
+      const bool buy = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+      const double entry = PositionGetDouble(POSITION_PRICE_OPEN);
+      const double sl = PositionGetDouble(POSITION_SL);
+      const double current_tp = PositionGetDouble(POSITION_TP);
+      const double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+      double tp = 0;
+      if(!TargetFromEntry(buy, entry, sl, tick_size, InpRewardRisk, tp))
+      {
+         WarnTargetOnce("invalid fill price, SL or tick size");
+         continue;
+      }
+      tp = NormalizeDouble(tp, (int)SymbolInfoInteger(_Symbol, SYMBOL_DIGITS));
+      if(MathAbs(tp - current_tp) < tick_size * 0.1)
+      {
+         target_warning = false;
+         continue;
+      }
+
+      MqlTick quote;
+      const double distance = MathMax(
+         (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL),
+         (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_FREEZE_LEVEL)) * _Point + tick_size;
+      if(!SymbolInfoTick(_Symbol, quote) ||
+         !MarketStopsValid(buy, quote.bid, quote.ask, sl, tp, distance))
+      {
+         WarnTargetOnce("stop/freeze distance prevents adjustment");
+         continue;
+      }
+      if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) || !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
+         !AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) || !AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
+      {
+         WarnTargetOnce("automated trading unavailable");
+         continue;
+      }
+
+      // Keep the original SL; only align TP to the actual (possibly weighted) fill.
+      const bool modified = trade.PositionModify(ticket, sl, tp);
+      const uint code = trade.ResultRetcode();
+      if(!modified || (code != TRADE_RETCODE_DONE && code != TRADE_RETCODE_NO_CHANGES))
+      {
+         WarnTargetOnce(trade.ResultRetcodeDescription());
+         continue;
+      }
+      target_warning = false;
+      PrintFormat("Position #%I64u TP aligned to actual fill %.8f: SL %.8f TP %.8f",
+                  ticket, entry, sl, tp);
+   }
+   if(!found)
+      target_warning = false;
+}
+
+void SubmitSignal(const bool buy, const MqlRates &signal, const double atr)
 {
    if(HasSymbolExposure() || !TradingAllowed(buy))
       return;
 
    MqlTick quote;
-   if(!SymbolInfoTick(_Symbol, quote) || quote.bid <= 0 || quote.ask < quote.bid)
+   if(!SymbolInfoTick(_Symbol, quote) || !MathIsValidNumber(quote.bid) ||
+      !MathIsValidNumber(quote.ask) || quote.bid <= 0 || quote.ask < quote.bid)
       return;
    const double spread = quote.ask - quote.bid;
    if(spread > InpMaxSpreadPrice)
@@ -263,8 +352,8 @@ void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
 
    const double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
    double entry, sl, tp;
-   if(!MomentumLevels(buy, signal.high, signal.low, atr, spread, tick_size,
-                      InpEntryBufferATR, InpSLBufferATR, InpRewardRisk, entry, sl, tp))
+   if(!MarketLevels(buy, signal.high, signal.low, atr, quote.bid, quote.ask, tick_size,
+                    InpSLBufferATR, InpRewardRisk, entry, sl, tp))
       return;
    const int digits = (int)SymbolInfoInteger(_Symbol, SYMBOL_DIGITS);
    entry = NormalizeDouble(entry, digits);
@@ -273,11 +362,9 @@ void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
 
    const double min_distance = MathMax(tick_size,
       (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point);
-   const double market_distance = buy ? entry - quote.ask : quote.bid - entry;
-   if(market_distance < min_distance || MathAbs(entry - sl) < min_distance ||
-      MathAbs(tp - entry) < min_distance)
+   if(!MarketStopsValid(buy, quote.bid, quote.ask, sl, tp, min_distance))
    {
-      Print("Signal skipped: breakout already passed or broker stop distance too large.");
+      Print("Signal skipped: current market price invalidates SL/TP or broker stop distance too large.");
       return;
    }
 
@@ -307,24 +394,29 @@ void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
       return;
    }
 
-   const datetime expiration = bar_open + InpPendingBars * PeriodSeconds(_Period);
-   if(expiration <= TimeCurrent())
+   if(!trade.SetTypeFillingBySymbol(_Symbol))
+   {
+      Print("Signal skipped: unsupported market filling policy.");
       return;
+   }
    const bool sent = buy
-      ? trade.BuyStop(volume, entry, _Symbol, sl, tp, ORDER_TIME_SPECIFIED, expiration, "MomentumXAU")
-      : trade.SellStop(volume, entry, _Symbol, sl, tp, ORDER_TIME_SPECIFIED, expiration, "MomentumXAU");
+      ? trade.Buy(volume, _Symbol, entry, sl, tp, MARKET_COMMENT)
+      : trade.Sell(volume, _Symbol, entry, sl, tp, MARKET_COMMENT);
    const uint code = trade.ResultRetcode();
-   if(!sent || (code != TRADE_RETCODE_DONE && code != TRADE_RETCODE_PLACED) ||
-      trade.ResultOrder() == 0)
+   if(!sent || (code != TRADE_RETCODE_DONE && code != TRADE_RETCODE_DONE_PARTIAL &&
+                code != TRADE_RETCODE_PLACED))
    {
       PrintFormat("Order not confirmed: %u %s. No automatic resend.", code,
                   trade.ResultRetcodeDescription());
       return;
    }
-   PrintFormat("%s stop #%I64u fixed lots=%.8f entry=%.*f SL=%.*f TP=%.*f estimated SL loss before costs=%.2f %s expires=%s",
-               buy ? "BUY" : "SELL", trade.ResultOrder(), volume, digits, entry,
+   PrintFormat("%s market request accepted: order #%I64u deal #%I64u code=%u lots=%.8f quoted entry=%.*f SL=%.*f TP=%.*f estimated SL loss before costs=%.2f %s",
+               buy ? "BUY" : "SELL", trade.ResultOrder(), trade.ResultDeal(), code, volume, digits, entry,
                digits, sl, digits, tp, -stop_profit,
-               AccountInfoString(ACCOUNT_CURRENCY), TimeToString(expiration));
+               AccountInfoString(ACCOUNT_CURRENCY));
+   // An accepted/partial request is never resent; reconcile the position when visible.
+   last_target_sync = 0;
+   AlignTakeProfit();
 }
 
 // False means data is not ready; retry only during the short new-bar window.
@@ -361,12 +453,13 @@ bool EvaluateClosedBar(const datetime bar_open)
          if(MathAbs(rates[i].close - rates[i].open) >= body)
             return true;
    }
-   SubmitSignal(buy, rates[0], atr, bar_open);
+   SubmitSignal(buy, rates[0], atr);
    return true;
 }
 
 void OnTick()
 {
+   AlignTakeProfit();
    const datetime bar_open = iTime(_Symbol, _Period, 0);
    if(bar_open <= 0 || bar_open == last_processed_bar)
       return;

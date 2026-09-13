@@ -1,102 +1,100 @@
 # Momentum Candle XAU — Expert Advisor MT5
 
-EA untuk **XAUUSD M5 atau M15**, berdasarkan indikator Pine Script “Momentum Candle Sekolah Trading”. Ini adalah **rancangan awal untuk diuji di demo**, bukan strategi yang sudah terbukti menguntungkan. Tidak ada martingale, grid, averaging, atau penambahan posisi saat rugi.
+**Versi 1.03: langsung entry market setelah candle momentum tutup, RR default 1:1, lot tetap 0,01.** Khusus XAUUSD M5/M15, berdasarkan indikator Pine “Momentum Candle Sekolah Trading”. Tidak ada lagi Buy Stop/Sell Stop atau syarat breakout. Ini perubahan aturan untuk diuji, **bukan klaim peningkatan win rate atau profit**.
 
-**Versi 1.02: lot tetap 0,01** (`InpFixedLots`), bukan persen balance/equity. Nilai hanya berubah jika input lot diubah manual. Aturan sinyal, entry, SL, TP dan expiry tetap sama; perubahan lot bukan perbaikan win rate.
-
-## File dan pemasangan
+## Satu file dan pemasangan
 
 1. Di MT5 pilih **File → Open Data Folder**.
-2. Unduh **satu file saja**, [`MomentumCandleXAU.mq5`](Experts/MomentumCandleXAU/MomentumCandleXAU.mq5), melalui tombol **Download raw file** di GitHub. Simpan di `MQL5/Experts/` atau subfolder `MomentumCandleXAU/`. Jangan menyimpan halaman HTML GitHub sebagai `.mq5`.
-3. Buka file tersebut di **MetaEditor milik MetaTrader 5**, bukan MT4 atau Pine Editor, lalu tekan **F7**. Versi 1.02 tetap memuat semua fungsi strategi dalam satu file; file pendukung versi lama tidak diperlukan. `Trade\Trade.mqh` adalah library standar bawaan MT5, bukan file tambahan yang perlu diunduh dari proyek ini. Saat mengganti versi, reset Inputs dan pastikan `InpFixedLots = 0.01`; parameter persen risiko versi lama sudah dihapus. Pending/posisi yang sudah ada tidak diubah ukurannya oleh upgrade: tunggu selesai atau batalkan pending lama sebelum menguji versi baru.
-4. Jalankan dahulu di **Strategy Tester/demo**, bukan akun live. Aktifkan Algo Trading jika digunakan pada chart demo.
-5. Pasang hanya **satu instance EA per simbol per akun**: pilih M5 **atau** M15. EA menolak order baru jika sudah ada posisi/order pada simbol tersebut, termasuk transaksi manual/EA lain. Pemeriksaan ini bukan kunci atomik antar-EA; jangan jalankan dua instance bersamaan.
+2. Unduh [`MomentumCandleXAU.mq5`](Experts/MomentumCandleXAU/MomentumCandleXAU.mq5) melalui **Download raw file**, lalu simpan di `MQL5/Experts/` atau subfolder `MomentumCandleXAU/`. Jangan menyimpan halaman HTML GitHub sebagai `.mq5`.
+3. Buka file di **MetaEditor MT5**, bukan MT4 atau Pine Editor; tekan **F7**. Tidak memerlukan file pendukung proyek. `Trade\Trade.mqh` adalah library standar bawaan MT5.
+4. Ganti EA lama, reset Inputs, lalu pastikan **`InpRewardRisk = 1.0`** dan **`InpFixedLots = 0.01`**. Preset lama bisa menyimpan RR 2; file baru tidak menimpa input tersimpan. Catat dan masukkan ulang pengaturan filter lama jika ingin perbandingan yang hanya mengubah entry/RR.
+5. Jalankan di Strategy Tester/demo terlebih dahulu. Aktifkan Algo Trading untuk chart demo. Gunakan satu instance per simbol per akun.
 
-EA menerima simbol dengan awalan `XAUUSD` seperti `XAUUSDm`, atau simbol yang melaporkan base currency `XAU` dan profit currency `USD`. Nama `GOLD` bisa bekerja jika metadata broker sesuai. EA menolak TF selain M5/M15 dan mensyaratkan chart Bid, pending stop, SL/TP, serta kedaluwarsa order bertipe `ORDER_TIME_SPECIFIED` di server broker. Tidak ada fallback ke pending tanpa batas waktu.
+EA tetap menolak entry saat ada posisi/order pada simbol tersebut, termasuk transaksi manual atau EA lain. Pemeriksaan ini bukan kunci atomik lintas-EA; jangan menjalankan beberapa instance sekaligus. **Pending dan posisi versi lama tidak otomatis dibatalkan/diubah.** Tunggu selesai atau batalkan pending lama sebelum pengujian baru. Penyesuaian TP hanya berlaku pada posisi dengan simbol, magic dan komentar `MomentumXAU_Market` milik versi market.
 
-Jika masih gagal compile, kirim **5 pesan error pertama beserta nomor baris** dari tab Errors MetaEditor, serta versi/build MT5. Banyak error dapat merupakan efek berantai dari satu kesalahan awal; penyebab pastinya tidak dapat ditetapkan tanpa pesan tersebut. Bila yang tidak ditemukan adalah `Trade\Trade.mqh`, periksa instalasi/library standar MT5.
+Nama simbol berawalan `XAUUSD` seperti `XAUUSDm` diterima, atau nama lain dengan metadata base `XAU` dan profit currency `USD`. Simbol `GOLD` dapat diterima jika metadatanya sesuai. Broker harus mendukung candle Bid, market order, dan SL/TP bersama order. Dukungan expiry pending tidak diperlukan lagi.
 
-## Rekomendasi aturan awal
+## Aturan sinyal dan entry
 
-**Mulai evaluasi dari M15**, lalu bandingkan M5 dengan periode dan biaya yang sama. M15 merupakan titik awal untuk mengurangi frekuensi sinyal, bukan klaim bahwa hasilnya lebih baik.
-
-| Komponen | Aturan default |
+| Komponen | Default |
 |---|---|
-| Candle sinyal | Hanya candle yang sudah tutup, bukan candle berjalan |
-| Minimum body | M5: 35 pip; M15: 45 pip |
-| Definisi pip emas | 1 pip = 0,10 perubahan harga; body minimum 3,50 / 4,50 |
-| Wick | Jumlah wick atas+bawah maksimal 30% high−low |
-| Mode wick | Agresif; pilihan konservatif mengikuti persis arah wick Pine asli |
-| Trend | Close candle sinyal di atas EMA H1 50 untuk buy; di bawah untuk sell |
-| EMA | Nilai candle H1 terakhir yang **sudah tutup**, bukan H1 berjalan |
-| Filter lonjakan | Lewati candle dengan high−low > 2,5 × ATR(14) TF chart |
-| Buy Stop | High sinyal + 0,10 × ATR + spread saat pemasangan |
-| Sell Stop | Low sinyal − 0,10 × ATR |
-| SL buy | Low sinyal − 0,15 × ATR |
-| SL sell | High sinyal + 0,15 × ATR + spread saat pemasangan |
-| TP | 2 × jarak entry–SL dari harga entry yang direncanakan |
-| Batas umur pending | 3 periode candle setelah candle sinyal selesai; M5: 15 menit, M15: 45 menit |
-| Lot | Tetap **0,01 lot** per order (`InpFixedLots`), tanpa sizing dari modal |
-| Validasi volume | Harus sesuai minimum, maksimum dan step broker; tidak dinaikkan/diturunkan otomatis |
-| Batas spread | 0,50 dalam satuan harga XAUUSD, **bukan 0,50 point** |
+| Waktu sinyal | Candle terakhir yang **sudah tutup**, shift 1 |
+| Entry BUY | Candle momentum bullish valid → market BUY pada Ask |
+| Entry SELL | Candle momentum bearish valid → market SELL pada Bid |
+| Minimum body | M5: 35 pip (harga 3,50); M15: 45 pip (harga 4,50) |
+| Definisi pip emas | `InpGoldPipSize = 0.10`, tidak otomatis mengikuti jumlah digit broker |
+| Wick | Total wick atas+bawah maksimal 30% high−low |
+| Mode wick | Agresif; `InpConservativeWick = false` |
+| Konsolidasi | Nonaktif; jika aktif, N body sebelumnya harus lebih kecil dari body sinyal |
+| Filter EMA | Aktif, H1 periode 50; BUY close > EMA, SELL close < EMA |
+| Nilai EMA | H1 terakhir yang sudah tutup, bukan H1 berjalan |
+| Filter lonjakan | Lewati range candle > 2,5 × ATR(14) pada TF chart |
+| SL BUY | Low candle sinyal − 0,15 × ATR |
+| SL SELL | High candle sinyal + 0,15 × ATR + spread saat pengiriman |
+| TP | Default 1 × jarak entry–SL; disesuaikan terhadap harga fill aktual |
+| Volume request | `InpFixedLots = 0.01`; tidak mengikuti balance/equity |
+| Batas spread | 0,50 dalam satuan harga emas, bukan 0,50 point |
+| Deviation request | `InpDeviationPoints = 50` dalam point broker |
 
-Semua angka di atas merupakan parameter awal, belum hasil optimasi/backtest. ATR menggunakan candle sinyal yang sudah tutup. Buffer minimum adalah satu tick; harga dibulatkan keluar sesuai tick size broker. Karena chart menggunakan Bid tetapi buy dipicu Ask dan SL sell dipicu Ask, spread ditambahkan pada entry buy dan SL sell. Spread bisa berubah setelah order ditempatkan.
+**“Langsung setelah close” berarti tick pertama candle baru saat data siap dan seluruh pemeriksaan lolos**, bukan timer yang mengeksekusi tanpa tick. Tidak menunggu harga melewati high/low candle dan tidak menunggu pullback. Setelah baru dipasang/restart, EA menunggu close berikutnya agar tidak mengejar sinyal lama.
 
-Entry terlambat tidak dikejar menggunakan market order. Jika pada saat evaluasi harga sudah melewati entry, jarak minimal broker tidak terpenuhi, data tidak siap dalam 30 detik pertama candle baru, spread terlalu besar, volume tidak valid, atau margin tidak cukup, sinyal dilewati. EA menunggu candle berikutnya setelah baru dipasang/restart; sinyal sebelum jeda sesi juga dilewati.
+EA mengevaluasi satu sinyal per candle. Jika indikator/history belum siap, pembacaan data dicoba ulang maksimal 30 detik dari awal bar (`InpMaxSignalDelaySeconds`). Jika filter, spread, volume, izin trading, margin atau jarak stop gagal, sinyal dilewati; tidak mengejar entry belakangan. Candle yang terpisah dari bar baru oleh jeda sesi/data juga dilewati.
 
-Konsolidasi opsional: body dari masing-masing N candle sebelumnya harus **lebih kecil** dari body sinyal, bukan filter sideways/range. Default nonaktif. Mode wick konservatif mempertahankan logika Pine: bullish `lowerWick < upperWick`, bearish kebalikannya; ini **bukan** pola rejection-wick yang biasanya memiliki ekor panjang di arah berlawanan.
+Buffer SL minimal satu tick. SL dan TP dibulatkan sesuai tick size; TP dibulatkan keluar sehingga RR bisa sedikit lebih besar dari input, kurang dari satu tick selisih jarak target. Candle dan SL BUY menggunakan Bid, sedangkan SL SELL dipicu Ask, sehingga SL SELL mendapat allowance spread.
 
-### Contoh entry, SL, dan TP — bukan harga rekomendasi saat ini
+Mode wick konservatif mempertahankan rumus Pine asli: bullish `lowerWick < upperWick`, bearish `upperWick < lowerWick`. Ini bukan pola rejection dengan ekor panjang di sisi berlawanan, dan nama “konservatif” bukan jaminan akurasi lebih tinggi. Aturan body, wick, konsolidasi, EMA dan ATR tidak diubah dari versi 1.02.
 
-Misalkan candle bullish memiliki open **3000**, close **3005,50**, high **3006**, low **2999**, ATR **5**, spread **0,30**, tick size **0,01**, dan lolos filter EMA:
+## Contoh BUY — bukan rekomendasi harga saat ini
 
-- Buy Stop = 3006 + 0,50 + 0,30 = **3006,80**.
+Candle sinyal sudah tutup: open 3000, close 3005,50, high 3006, low 2999. ATR 5, tick size 0,01, quote setelah close Bid 3005,50 / Ask 3005,80, dan semua filter lolos:
+
+- **Market BUY** dengan quote entry 3005,80; tidak menunggu high 3006 ditembus.
 - SL = 2999 − 0,75 = **2998,25**.
-- Jarak risiko = **8,55**; TP = 3006,80 + 2 × 8,55 = **3023,90**.
-- Jika contract size broker 100 oz/lot, 0,01 lot berisiko sekitar **USD 8,55**, sebelum komisi/slippage.
-- Pada equity USD 1.000 maupun USD 10.000, volume tetap **0,01 lot** dan estimasi kerugian contoh ini tetap USD 8,55, jika margin mencukupi. Persentase risiko terhadap modal berbeda: sekitar 0,855% versus 0,0855%. Jarak SL berbeda akan menghasilkan nominal risiko berbeda meski lot tetap.
+- Risiko jarak = 3005,80 − 2998,25 = **7,55**.
+- TP awal = 3005,80 + 7,55 = **3013,35**.
+- Jika fill aktual 3005,90, SL tetap 2998,25; target disesuaikan menjadi **3013,55**, bukan memakai close candle atau quote lama.
+- Dengan kontrak 100 oz/lot, request 0,01 lot, dan fill 3005,80, estimasi kerugian ke SL sekitar USD 7,55 sebelum biaya. Kontrak broker/mata uang akun lain bisa berbeda.
 
-TP/SL tetap; tidak ada breakeven, trailing stop, atau close saat sinyal berlawanan. Sinyal baru diabaikan selama ada exposure. Tidak ada batas durasi posisi setelah terisi; swap dapat berlaku.
+## Harga fill dan proteksi posisi
 
-## Risiko dan batas operasional
+SL dan TP awal **dikirim bersama market order**, berdasarkan quote sebelum pengiriman. EA tidak sengaja membuka posisi tanpa stop untuk mengejar RR yang presisi. Setelah posisi terlihat, TP dihitung ulang memakai `POSITION_PRICE_OPEN` aktual (termasuk harga rata-rata jika terjadi partial fills) dan SL posisi yang sama.
 
-- `OrderCalcProfit` hanya mengestimasi kerugian ke SL untuk Journal dalam **mata uang akun**, bukan menentukan volume. Estimasi belum memasukkan komisi, swap, atau slippage. Parameter persen risiko, maksimum lot untuk sizing, dan cadangan biaya per lot versi lama sudah dihapus.
-- **Tidak ada batas kerugian berupa persen modal.** Lot 0,01 bukan berarti selalu aman untuk modal berapa pun. Gap, slippage, swap dan biaya dapat menaikkan kerugian aktual. RR 1:2 adalah rasio harga rencana, bukan rasio hasil bersih yang dijamin.
-- EA tetap mensyaratkan estimasi margin order tidak melebihi 90% free margin. Modal/leverage dan ketentuan broker tetap berpengaruh pada kemampuan entry dan stop-out. Jika lot input tidak sesuai min/max/step broker, EA gagal inisialisasi dengan pesan jelas, bukan menaikkan lot agar diterima. Volume diperiksa kembali sebelum setiap order.
-- Batas spread diperiksa saat **pemasangan** order, bukan jaminan spread saat terpicu. EA tidak memiliki filter berita, batas rugi harian, ataupun filter jam trading.
-- Hindari menguji live di sekitar NFP, CPI, FOMC dan rollover tanpa evaluasi khusus. Menonaktifkan Algo Trading/melepas EA **tidak membatalkan pending order dan tidak menutup posisi**. Batalkan pending secara manual jika tidak ingin terpicu saat berita.
-- Pending memiliki expiry server, dan SL/TP dikirim bersama order. Keduanya tetap mengikuti aturan eksekusi broker ketika terminal offline. Pending yang sudah terisi tidak lagi tunduk pada expiry.
-- Bila order ditolak/hasilnya tidak terkonfirmasi, EA mencatat retcode dan **tidak otomatis mengirim ulang** untuk menghindari duplikasi. Lihat tab Experts/Journal jika tidak ada transaksi.
-- Tidak ada retry untuk sinyal yang gagal pemeriksaan spread/margin/trading permission. Hanya kegagalan kesiapan data yang dicoba ulang dalam jendela awal candle.
+Penyesuaian dilakukan segera setelah respons order dan pada tick berikutnya, maksimal sekali per detik waktu server. Hanya TP yang diubah; SL tidak dilebarkan. Jika sudah sesuai, tidak ada request modifikasi. Jika stop/freeze level, izin trading atau server menghalangi perubahan, EA mempertahankan SL/TP yang sedang berlaku, mencatat peringatan Journal, dan mencoba penyesuaian lagi pada tick selanjutnya. **RR aktual dapat sementara/tetap berbeda jika penyesuaian belum berhasil atau posisi sudah ditutup terlebih dahulu.** Broker harus mempertahankan komentar posisi `MomentumXAU_Market` agar EA mengenalinya untuk penyesuaian; jika komentar diubah broker, SL/TP awal tetap berlaku tanpa koreksi fill otomatis.
 
-## Backtest yang perlu dilakukan di MT5
+Tidak ada trailing stop, breakeven, averaging, martingale, atau close saat sinyal berlawanan. Jangan mengubah SL/TP secara manual sambil EA mengelola targetnya. Tidak ada batas durasi posisi atau filter berita/jam trading; posisi dapat melewati rollover/weekend.
 
-**Belum ada backtest MT5 yang dijalankan atau laporan performa yang diverifikasi dalam workspace ini; file `.ex5` juga belum dikompilasi di sini.** Workspace Linux tempat kode dibuat tidak menyediakan MT5/MetaEditor maupun data tick broker. Uji logika di bawah bukan backtest dan tidak memverifikasi API/perilaku terminal MQL5.
+## Batas risiko dan eksekusi
 
-1. Compile di MetaEditor; periksa dan selesaikan seluruh error/warning sebelum pengujian.
-2. Buka Strategy Tester (`Ctrl+R`), pilih EA, simbol XAUUSD **broker yang akan dipakai**, lalu M15. Ulangi terpisah di M5.
-3. Pilih **Every tick based on real ticks**. Jangan memakai Open prices only untuk strategi pending breakout; urutan tick menentukan apakah entry, SL, atau TP tersentuh lebih dulu.
-4. Gunakan minimal 12–24 bulan data yang tersedia, mencakup berbagai kondisi volatilitas; misalnya 2024–2025 untuk pengembangan dan 2026-01-01 sampai 2026-08-31 sebagai out-of-sample. Jangan optimasi ulang pada periode out-of-sample lalu tetap menyebutnya pengujian independen.
-5. Samakan deposit, mata uang akun, leverage, spesifikasi kontrak, serta batas volume dengan rencana akun. Pastikan spread, komisi dan swap benar-benar tercermin dalam hasil tester. Reset input ke versi baru dengan `InpFixedLots = 0.01`.
-6. Lakukan visual test sejumlah transaksi: candle sinyal tutup dulu; EMA berasal dari H1 selesai; entry/SL/TP sesuai Journal; pending habis setelah 3 periode; setiap order memakai 0,01 lot. Bandingkan dua deposit dengan margin mencukupi: volume tidak boleh berubah. Broker minimum 0,1 atau step yang tidak menerima 0,01 harus ditolak, bukan dibulatkan naik.
-7. Bandingkan net profit setelah biaya, equity drawdown maksimal, jumlah trade, profit factor, expected payoff, rangkaian loss, serta konsistensi per bulan dan antara in-sample/out-of-sample. Jangan memilih hanya dari win rate. RR 2 memiliki break-even teoritis 33,3% **sebelum** biaya dan perubahan fill, bukan target win rate EA.
-8. Uji sensitivitas biaya/delay dan parameter di sekitar default. Hindari memilih satu kombinasi sempit yang terlihat bagus di histori. Bila data memungkinkan, cari ratusan transaksi; sampel sedikit membatasi kesimpulan.
-9. Forward-test demo beberapa minggu atau lebih sampai sampel memadai. Keputusan live perlu mempertimbangkan kemampuan menanggung kerugian, bukan hanya satu laporan backtest yang bagus.
+- **Lot tetap bukan risiko uang tetap.** SL yang lebih jauh menghasilkan kerugian nominal lebih besar. Tidak ada batas kerugian berupa persen modal atau batas rugi harian. Modal tetap harus cukup untuk margin dan menanggung kerugian.
+- Volume harus sesuai min/max/step broker. Jika 0,01 tidak didukung, EA gagal inisialisasi dengan pesan jelas, bukan menaikkan/menurunkan lot. Volume diperiksa ulang sebelum pengiriman.
+- `OrderCalcProfit` hanya memperkirakan kerugian ke SL dalam mata uang akun untuk Journal, bukan menentukan volume. Komisi, swap dan slippage belum termasuk estimasi.
+- Estimasi margin harus tidak melebihi 90% free margin. SL/TP harus memenuhi jarak broker terhadap **Bid untuk BUY, Ask untuk SELL**, bukan hanya terhadap harga entry.
+- Filling policy mengikuti broker (`SetTypeFillingBySymbol`, FOK dipilih jika tersedia). Jika broker hanya mendukung partial fill, volume terisi bisa lebih kecil daripada request; EA tidak menambah order untuk mengejar sisanya.
+- Respons order diperiksa melalui retcode. Requote, rejection, timeout atau hasil tidak pasti tidak memicu pengiriman ulang. Respons accepted/partial tidak dianggap bukti fill penuh; posisi aktual yang terlihat menjadi dasar TP. Periksa Experts/Journal.
+- Deviation bukan jaminan batas slippage pada semua execution mode; pada Market Execution broker dapat mengabaikannya. Gap, spread dan fill dapat membuat hasil berbeda dari rencana 1:1.
+- Menonaktifkan Algo Trading/melepas EA tidak menutup posisi. Stop/target yang sudah diterima server tetap mengikuti aturan broker; penyesuaian TP membutuhkan EA aktif. Hindari penggunaan live sebelum validasi.
 
-Jika ingin hasil dianalisis lebih lanjut, kirim laporan HTML tester, input `.set`, nama broker/simbol, rentang tanggal, kualitas data, deposit/leverage, dan informasi komisi. Jangan kirim kredensial akun.
+## Backtest versi baru
 
-### Jika win rate hanya 27%
+**Belum ada kompilasi MetaEditor atau backtest MT5 versi 1.03 di workspace ini.** Lingkungan Linux ini tidak menyediakan MT5/MetaEditor atau tick broker. Hasil backtest versi breakout sebelumnya tidak membuktikan hasil mode market 1:1.
 
-Win rate tidak cukup untuk menentukan hasil tanpa rata-rata profit/loss dan biaya. Jika rata-rata menang tepat 2R dan rata-rata kalah 1R, hasil harapan adalah `0,27 × 2R − 0,73 × 1R = −0,19R` per transaksi sebelum biaya. Dengan asumsi itu, break-even memerlukan win rate di atas 33,3% sebelum biaya. R adalah satu unit risiko, bukan persen modal.
-
-Lot tetap mengubah nominal profit/loss dan transaksi yang sebelumnya ditolak karena sizing, tetapi tidak memperbaiki kualitas sinyal. Hasil aktual perlu diperiksa melalui laporan: jumlah trade, rata-rata profit/loss, spread/komisi, drawdown, timeframe dan periode. Jangan menganggap menaikkan TP otomatis memperbaiki hasil; itu juga bisa menurunkan win rate. Belum ada analisis laporan atau backtest baru yang memverifikasi penyebab angka 27%.
+1. Compile di MetaEditor; jika gagal, kirim 5 error pertama beserta nomor baris dan build MT5. Jangan lanjut live jika ada error.
+2. Pilih EA, XAUUSD broker yang sama, dan M5 atau M15. Gunakan **Every tick based on real ticks**.
+3. Reset input, pastikan RR 1 dan lot 0,01, lalu masukkan ulang filter yang ingin dibandingkan. Samakan deposit, leverage, biaya, TF dan periode dengan baseline. Versi 1.02 di histori Git tetap menjadi baseline breakout RR 2.
+4. Visual-test BUY dan SELL: hanya setelah candle tutup, entry langsung tanpa pending/high-low breakout, SL di luar candle sinyal, TP sesuai fill aktual, tidak ada entry kedua pada candle yang sama.
+5. Periksa Journal dan deal volume; uji slippage/stop-level, restart EA, order ditolak, spread tinggi, margin kurang, serta broker yang tidak mendukung 0,01. Periksa pesan penyesuaian TP, jangan hanya tanda pada chart.
+6. Bandingkan net profit setelah biaya, profit factor, equity drawdown, average profit/loss, jumlah transaksi, serta hasil per arah dan bulan. Untuk nominal rata-rata menang/kalah yang sebanding, titik impas teoritis RR 1:1 adalah **50% kemenangan sebelum biaya**; biaya menaikkan ambang yang diperlukan.
+7. Validasi di periode lain yang tidak dipakai memilih aturan, kemudian forward-test demo. Mengubah entry dan RR sekaligus menguji kombinasi baru, bukan membuktikan pengaruh salah satunya secara terpisah. Jika perlu, uji market RR 2 juga untuk membedakan efek entry dan RR.
 
 ## Verifikasi lokal untuk pengembang
 
-Jalankan `bash tests/run.sh` (memerlukan `g++`). Test memeriksa bahwa EA tidak menggunakan custom include, input lot default 0,01, dan tidak ada lagi sizing equity/balance. Test mengompilasi **fungsi matematika produksi langsung dari `MomentumCandleXAU.mq5`** sebagai C++ dengan shim fungsi matematika MQL; tidak menggandakan implementasi strategi. Macro `MOMENTUM_CORE_TEST` hanya didefinisikan oleh test C++ untuk mengecualikan API terminal; jangan mendefinisikannya saat compile di MetaEditor. Cakupan: batas body/wick, arah wick konservatif, candle invalid/doji, harga Bid/Ask, rounding tick, lot tetap, penolakan volume di luar min/max/step tanpa pembulatan otomatis, dan 10.000 kasus acak deterministik untuk invariant harga serta volume. Uji risiko-persentase lama diganti karena perilaku yang diminta sekarang adalah lot tetap. EA yang memakai API terminal tetap harus dikompilasi dan diuji di MT5.
+Jalankan `bash tests/run.sh` (memerlukan `g++`). Pengujian memastikan hanya library bawaan MT5 yang di-include, lot default 0,01 tanpa sizing equity/balance, RR default 1, market Buy/Sell dengan SL/TP awal, serta tidak ada lagi pending breakout atau expiry.
 
-### Referensi implementasi
+Test C++ mengompilasi fungsi matematika produksi langsung dari `.mq5` memakai shim matematika MQL. `MOMENTUM_CORE_TEST` hanya didefinisikan oleh test; jangan mendefinisikannya di MetaEditor. Cakupan: sinyal body/wick, angka invalid, entry Ask/Bid tanpa breakout, SL buffer, target quote/actual fill, rounding tick, jarak stop/freeze dua arah, fixed lots dan min/max/step, serta 10.000 kasus acak deterministik. Test lama untuk level pending diganti karena aturan entry memang berubah. Ini **bukan kompilasi MQL5 atau pengujian terminal/broker**, dan bukan backtest performa.
 
-- [MQL5 CTrade::BuyStop — parameter expiry dan pemeriksaan retcode](https://www.mql5.com/en/docs/standardlibrary/tradeclasses/ctrade/ctradebuystop)
-- [MQL5 OrderCalcProfit — estimasi dalam mata uang akun](https://www.mql5.com/en/docs/trading/ordercalcprofit)
-- [MQL5 properti simbol — tick size, volume, stop level, expiration](https://www.mql5.com/en/docs/constants/environment_state/marketinfoconstants)
+### Referensi API
+
+- [CTrade::Buy — market order dan pemeriksaan retcode/deal](https://www.mql5.com/en/docs/standardlibrary/tradeclasses/ctrade/ctradebuy)
+- [SetTypeFillingBySymbol — filling policy broker](https://www.mql5.com/en/docs/standardlibrary/tradeclasses/ctrade/ctradesettypefillingbysymbol)
+- [PositionModify — modifikasi SL/TP menurut ticket](https://www.mql5.com/en/docs/standardlibrary/tradeclasses/ctrade/ctradepositionmodify)
+- [OrderCalcProfit — estimasi dalam mata uang akun](https://www.mql5.com/en/docs/trading/ordercalcprofit)
