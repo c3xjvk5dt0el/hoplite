@@ -110,12 +110,15 @@ class HighWinEngineTests(unittest.TestCase):
         self.assertEqual(result['average_full_week_usd'],50)
         self.assertEqual(result['weeks_at_least_100'],1)
         self.assertEqual(result['days_at_least_20'],1)
+        self.assertEqual(result['days_at_least_20_pct'],10)
+        self.assertEqual(result['weeks_at_least_100_pct'],50)
 
     def test_partial_boundary_weeks_excluded(self):
         result=summary([],timestamp('2025-01-01'),timestamp('2025-01-15'))
         self.assertEqual(result['full_week_count'],1)
         self.assertEqual(result['partial_weeks'],2)
         self.assertEqual(result['weeks_at_least_100'],0)
+        self.assertEqual(result['partial_week_ids'],['2025-W01','2025-W03'])
 
 
 if __name__=='__main__':

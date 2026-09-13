@@ -19,6 +19,7 @@ Raw stop is beyond the selected swing by max(0.10 ATR14, one tick); short stops 
 - Maximum 12 entries per UTC weekday. Sunday/Saturday entries disabled.
 - Daily entry-risk budget: USD 25. Do not open when realized daily P/L minus estimated loss at the proposed SL and commission would be below -25. This is an entry gate, not a guaranteed loss cap through slippage/gaps. No daily profit stop is added to make target attainment look better.
 - Spread <= 0.50 and <= 10% of quoted stop distance. No parameter search over session, budget, holding time or spread limits.
+- New-bar entries use the existing MT5-compatible guard `TimeCurrent() - bar_open <= 30`, in whole server seconds; the opening `POSITION_TIME` and timeout use the same clock. Native tick order is retained even within one second. M1 cannot resolve the first tick's seconds, so its opening minute is only a screening approximation; the native replay applies the guard to observed tick seconds.
 - Commission USD 0.04 round trip; adverse slippage 0.05 price units per market/SL execution; stress 0.15. Same M1 Bid/Ask and SL-first ambiguity policy as the previous proxy. Swaps omitted and overnight/gap exits explicitly counted.
 - No partial profit, trailing stop or breakeven mechanism in this first comparison. Report win rate by **net** closed-trade profit.
 
@@ -38,3 +39,7 @@ All 2025–August 2026 data was already examined for the previous, different pul
 - Per-trade win rate, payoff ratio, net profit/PF, drawdown and cost stress remain primary safeguards: a high win rate alone does not qualify.
 - If feasible, replay the locked candidate on the already-cached public native ticks for the final-check window. This remains a custom replay, **not MetaEditor compilation or MT5 Strategy Tester**. Do not call an OHLC proxy a tick replay.
 - Implement at most one additional standalone `.mq5` with fixed lots and transparent risk/session controls; preserve earlier EAs. If the financial targets are not met, state that clearly rather than promising daily income.
+
+## Audited rerun note
+
+The first 36-candidate attempt is retained. Before publishing conclusions, an audit requested stronger model/input fingerprinting, atomic validation/lock binding, locked tick-replay CLI inputs, and explicit percentages/losing-week labels. The clock paragraph above clarifies the already-implemented integer-second rule; it does not change signals, execution parameters or selection thresholds. Re-run all phases in a new directory after these engineering/reporting repairs, and compare numerical results with the retained attempt. No new configurations are added because the first attempt failed its gates.

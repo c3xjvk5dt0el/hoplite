@@ -1,5 +1,13 @@
 # Momentum Candle XAU — Expert Advisor MT5
 
+## Penelitian lanjutan: win rate tinggi dan target USD 100/minggu
+
+**[Hasil 36 konfigurasi strategi](research/high_win/RESULTS.md): belum ada yang lolos kriteria ketahanan biaya, dan target USD 20/hari atau USD 100/minggu pada lot 0,01 belum terbukti.** Win rate pengembangan tertinggi 60,85% hanya menghasilkan sekitar USD 4,35 sepanjang 2025 dan merugi pada biaya stres. Ini bukan strategi pendapatan tetap.
+
+EA pembanding **[`SweepReclaimXAU.mq5`](Experts/SweepReclaimXAU/SweepReclaimXAU.mq5)** tetap disediakan untuk eksperimen/tester, bukan sebagai kandidat yang lolos. Default akun riil diblokir. Pemeriksaan khusus atas **21.270.986 tick publik** Juni–Agustus 2026 menghasilkan net **−USD 40,37**, bukan target tersebut. Replay kustom ini bukan Strategy Tester MT5; native compile belum tersedia. [Aturan dan pemasangan](Experts/SweepReclaimXAU/README.md) · [Metode dan reproduksi](research/high_win/README.md).
+
+Semua EA sebelumnya di bawah tetap dipertahankan; jangan jalankan beberapa EA pada simbol yang sama.
+
 ## Kandidat baru: Trend Pullback XAU
 
 EA eksperimen terpisah tersedia di **[`TrendPullbackXAU.mq5`](Experts/TrendPullbackXAU/TrendPullbackXAU.mq5)**: satu file, XAUUSD **M5**, filter tren M15, entry market setelah pullback, lot tetap **0,01**, RR **1:1,5**, dan timeout default **60 menit**. [Panduan pemasangan dan aturan](Experts/TrendPullbackXAU/README.md) · [Metode riset candle historis](research/README.md).

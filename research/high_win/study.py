@@ -18,24 +18,14 @@ PERIODS = {'develop': ('2025-01-01','2026-01-01'),
 
 
 def verified_minutes(root: Path, end: str):
-    meta = json.loads((root/'metadata.json').read_text())
-    records = [r for r in meta['months'] if '2024-12' <= r['month'] < end[:7]]
-    months = []
-    year, month = 2024, 12
-    while f'{year:04d}-{month:02d}' < end[:7]:
-        months.append(f'{year:04d}-{month:02d}')
-        year, month = (year+1,1) if month == 12 else (year,month+1)
-    if sorted(r['month'] for r in records) != months:
-        raise ValueError('Requested monthly history or warmup missing/duplicated in manifest')
-    paths, provenance = [], []
-    for record in sorted(records,key=lambda x:x['month']):
-        path = root/Path(record['csv']).name
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        if record['status'] != 'verified' or digest != record['csv_sha256']:
-            raise ValueError(f'Unverified or changed source CSV: {path.name}')
-        paths.append(path)
-        provenance.append(dict(month=record['month'], csv_sha256=digest, zip_sha256=record['zip_sha256']))
-    return load_minutes(paths), provenance
+    from research.high_win.replay_ticks import load_source_catalog, load_verified_minutes, _verify_sha256
+    catalog=load_source_catalog(root,timestamp('2024-12-01'),timestamp(end))
+    for source in catalog.setup_months:
+        _verify_sha256(source.zip_path,source.zip_sha256,f'{source.month} tick ZIP')
+    provenance=dict(metadata_sha256=catalog.metadata_sha256,
+                    months=[dict(month=s.month,csv_sha256=s.csv_sha256,zip_sha256=s.zip_sha256)
+                            for s in catalog.setup_months])
+    return load_verified_minutes(catalog.setup_months),provenance
 
 
 def brief(stats):
@@ -62,8 +52,32 @@ def fallback(records):
 
 
 def model_fingerprint():
-    paths=['research/high_win/PLAN.md','research/high_win/signals.py','research/high_win/engine.py']
+    paths=['research/high_win/PLAN.md','research/high_win/signals.py','research/high_win/engine.py',
+           'research/high_win/study.py','research/high_win/replay_ticks.py','research/backtest_pullback.py']
     return {p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in paths}
+
+
+def write_json(path, value):
+    if path.exists():
+        raise FileExistsError(f'Preserve completed artifact: {path}')
+    temporary=path.with_suffix('.json.part')
+    with temporary.open('x') as f:
+        json.dump(value,f,indent=2);f.write('\n')
+    temporary.replace(path)
+
+
+def verified_lock(path: Path):
+    lock=json.loads(path.read_text())
+    validation_path=path.parent/'validate.json'
+    raw=validation_path.read_bytes()
+    validation=json.loads(raw)
+    if lock.get('validation_sha256')!=hashlib.sha256(raw).hexdigest():
+        raise ValueError('Validation artifact does not match the published selection lock')
+    if lock['model']!=model_fingerprint() or validation['model']!=lock['model']:
+        raise ValueError('Model changed after validation; do not reuse this selection')
+    if validation.get('phase')!='validate' or validation.get('locked_candidate_id')!=lock['candidate_id']:
+        raise ValueError('Candidate lock does not belong to this completed validation')
+    return lock
 
 
 def eligibility(record, phase):
@@ -84,9 +98,13 @@ def eligibility(record, phase):
 
 def write_trades(path, trades):
     if trades:
-        with path.open('w', newline='') as f:
+        if path.exists():
+            raise FileExistsError(f'Preserve prior trade artifact; use a new attempt directory: {path}')
+        temporary=path.with_suffix('.csv.part')
+        with temporary.open('x', newline='') as f:
             writer=csv.DictWriter(f,fieldnames=list(trades[0]))
             writer.writeheader();writer.writerows(trades)
+        temporary.replace(path)
 
 
 def run_candidate(candidate, setups, minutes, start, end, out: Path, phase: str):
@@ -132,9 +150,7 @@ def main():
             raise ValueError('Model changed after development; preserve outcomes and restart all phases in a new output directory')
         selected=[c for c in universe if c.id in develop['selected_ids']]
     else:
-        lock=json.loads((out/'lock.json').read_text())
-        if lock['model']!=model:
-            raise ValueError('Model changed after candidate lock; do not reuse this final-check selection')
+        lock=verified_lock(out/'lock.json')
         selected=[c for c in universe if c.id==lock['candidate_id']]
     if not selected:
         raise ValueError('No candidate was selected by the preceding phase')
@@ -168,11 +184,14 @@ def main():
             winner=rank(development_leaders)[0]['candidate']['id']
         result['validation_gate_passed']=bool(eligible)
         result['locked_candidate_id']=winner
-        (out/'lock.json').write_text(json.dumps(dict(candidate_id=winner,
+        pending_lock=dict(candidate_id=winner,
             development_gate_passed=develop['development_gate_passed'],validation_gate_passed=bool(eligible),
             reason='Qualified chronological selection' if eligible else 'Failed gates; development leader retained, not validated',
-            protocol_sha256=result['protocol_sha256'],model=model),indent=2)+'\n')
-    destination.write_text(json.dumps(result,indent=2)+'\n')
+            protocol_sha256=result['protocol_sha256'],model=model)
+    write_json(destination,result)
+    if args.phase=='validate':
+        pending_lock['validation_sha256']=hashlib.sha256(destination.read_bytes()).hexdigest()
+        write_json(out/'lock.json',pending_lock)
     print('SAVED',destination,flush=True)
     if 'selected_ids' in result: print('SELECTED',result['selected_ids'],flush=True)
     if 'locked_candidate_id' in result: print('LOCKED',result['locked_candidate_id'],flush=True)

@@ -1,0 +1,2004 @@
+{
+  "objective": "USD 20 per UTC weekday / USD 100 per complete ISO week, fixed 0.01 lot; not a guarantee",
+  "verdict": "No candidate passed the development gate. Income objective not established. Not qualified for live use.",
+  "candidate_count": 36,
+  "development_eligible": 0,
+  "highest_development_win_rate_candidate": {
+    "candidate": {
+      "id": "bands_2.5_stop0.75_rr0.60",
+      "family": "bands",
+      "entry_setting": 2.5,
+      "min_stop_atr": 0.75,
+      "rr": 0.6
+    },
+    "halves": {
+      "base": {
+        "H1": {
+          "trades": 102,
+          "wins": 63,
+          "losses": 39,
+          "win_rate_pct": 61.7647,
+          "net_usd": 3.423,
+          "profit_factor": 1.0239722669653069,
+          "average_win_usd": 2.320841269841121,
+          "average_loss_usd": -3.6612820512824134,
+          "expected_payoff_usd": 0.033558823529181436,
+          "closed_trade_max_drawdown_usd": 22.38200000001177,
+          "max_consecutive_losses": 3,
+          "weekday_count": 129,
+          "no_trade_weekdays": 73,
+          "average_weekday_usd": 0.026534883720748095,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -12.804000000000615,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 25,
+          "positive_weeks": 11,
+          "positive_weeks_pct": 44.0,
+          "average_full_week_usd": 0.1922000000000001,
+          "median_full_week_usd": -0.002,
+          "worst_full_week_usd": -11.138,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 13,
+          "max_consecutive_losing_weeks": 3,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W01",
+            "2025-W27"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "target": 62,
+            "stop": 39,
+            "timeout": 1
+          }
+        },
+        "H2": {
+          "trades": 110,
+          "wins": 66,
+          "losses": 44,
+          "win_rate_pct": 60.0,
+          "net_usd": 0.926,
+          "profit_factor": 1.00463955748828,
+          "average_win_usd": 3.0380909090907506,
+          "average_loss_usd": -4.536090909091333,
+          "expected_payoff_usd": 0.008418181817917442,
+          "closed_trade_max_drawdown_usd": 36.30800000000421,
+          "max_consecutive_losses": 5,
+          "weekday_count": 132,
+          "no_trade_weekdays": 67,
+          "average_weekday_usd": 0.007015151514931182,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -11.40800000000043,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 25,
+          "positive_weeks": 10,
+          "positive_weeks_pct": 40.0,
+          "average_full_week_usd": -0.63448,
+          "median_full_week_usd": -1.993,
+          "worst_full_week_usd": -15.325,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 15,
+          "max_consecutive_losing_weeks": 4,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W27",
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 41,
+            "target": 65,
+            "timeout": 4
+          }
+        }
+      },
+      "stress": {
+        "H1": {
+          "trades": 102,
+          "wins": 63,
+          "losses": 39,
+          "win_rate_pct": 61.7647,
+          "net_usd": -1.737,
+          "profit_factor": 0.9884653695463685,
+          "average_win_usd": 2.362746031745946,
+          "average_loss_usd": -3.8612820512822315,
+          "expected_payoff_usd": -0.017029411764827754,
+          "closed_trade_max_drawdown_usd": 26.162000000005143,
+          "max_consecutive_losses": 3,
+          "weekday_count": 129,
+          "no_trade_weekdays": 73,
+          "average_weekday_usd": -0.013465116279166156,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -13.204000000000251,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 25,
+          "positive_weeks": 10,
+          "positive_weeks_pct": 40.0,
+          "average_full_week_usd": -0.008599999999999868,
+          "median_full_week_usd": -0.222,
+          "worst_full_week_usd": -12.018,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 14,
+          "max_consecutive_losing_weeks": 3,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W01",
+            "2025-W27"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "target": 61,
+            "stop": 39,
+            "timeout": 2
+          }
+        },
+        "H2": {
+          "trades": 110,
+          "wins": 63,
+          "losses": 47,
+          "win_rate_pct": 57.2727,
+          "net_usd": -20.779,
+          "profit_factor": 0.9044863249827838,
+          "average_win_usd": 3.123349206349209,
+          "average_loss_usd": -4.628723404255214,
+          "expected_payoff_usd": -0.18889999999995363,
+          "closed_trade_max_drawdown_usd": 49.8689999999904,
+          "max_consecutive_losses": 5,
+          "weekday_count": 132,
+          "no_trade_weekdays": 67,
+          "average_weekday_usd": -0.15741666666662804,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -15.505999999996819,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 25,
+          "positive_weeks": 9,
+          "positive_weeks_pct": 36.0,
+          "average_full_week_usd": -1.50908,
+          "median_full_week_usd": -2.133,
+          "worst_full_week_usd": -18.861,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 16,
+          "max_consecutive_losing_weeks": 4,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W27",
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 42,
+            "target": 63,
+            "timeout": 5
+          }
+        }
+      }
+    },
+    "base": {
+      "trades": 212,
+      "wins": 129,
+      "losses": 83,
+      "win_rate_pct": 60.8491,
+      "net_usd": 4.349,
+      "profit_factor": 1.0127023348461262,
+      "average_win_usd": 2.687806201550234,
+      "average_loss_usd": -4.125036144578708,
+      "expected_payoff_usd": 0.020514150943148235,
+      "closed_trade_max_drawdown_usd": 36.30800000000421,
+      "max_consecutive_losses": 5,
+      "weekday_count": 261,
+      "no_trade_weekdays": 140,
+      "average_weekday_usd": 0.016662835248840692,
+      "median_weekday_usd": 0.0,
+      "worst_weekday_usd": -12.804000000000615,
+      "days_at_least_20": 0,
+      "days_at_least_20_pct": 0.0,
+      "full_week_count": 51,
+      "positive_weeks": 22,
+      "positive_weeks_pct": 43.13725490196079,
+      "average_full_week_usd": -0.14811764705882352,
+      "median_full_week_usd": -0.708,
+      "worst_full_week_usd": -15.325,
+      "weeks_at_least_100": 0,
+      "weeks_at_least_100_pct": 0.0,
+      "losing_weeks": 28,
+      "max_consecutive_losing_weeks": 4,
+      "partial_weeks": 2,
+      "partial_week_ids": [
+        "2025-W01",
+        "2026-W01"
+      ],
+      "off_weekday_net_usd": 0.0,
+      "cross_utc_date_trades": 0,
+      "exits_after_45_minutes": 0,
+      "ambiguous_minutes": 0,
+      "exit_reasons": {
+        "target": 127,
+        "stop": 80,
+        "timeout": 5
+      }
+    },
+    "base_skips": {
+      "opened": 212,
+      "session": 187,
+      "spread_to_risk": 4,
+      "stop_cap": 7,
+      "daily_risk_budget": 1
+    },
+    "stress": {
+      "trades": 212,
+      "wins": 126,
+      "losses": 86,
+      "win_rate_pct": 59.434,
+      "net_usd": -22.516,
+      "profit_factor": 0.9388384853588112,
+      "average_win_usd": 2.7430476190475774,
+      "average_loss_usd": -4.280697674418629,
+      "expected_payoff_usd": -0.1062075471698459,
+      "closed_trade_max_drawdown_usd": 49.8689999999904,
+      "max_consecutive_losses": 5,
+      "weekday_count": 261,
+      "no_trade_weekdays": 140,
+      "average_weekday_usd": -0.08626819923374458,
+      "median_weekday_usd": 0.0,
+      "worst_weekday_usd": -15.505999999996819,
+      "days_at_least_20": 0,
+      "days_at_least_20_pct": 0.0,
+      "full_week_count": 51,
+      "positive_weeks": 20,
+      "positive_weeks_pct": 39.21568627450981,
+      "average_full_week_usd": -0.6784117647058823,
+      "median_full_week_usd": -1.119,
+      "worst_full_week_usd": -18.861,
+      "weeks_at_least_100": 0,
+      "weeks_at_least_100_pct": 0.0,
+      "losing_weeks": 30,
+      "max_consecutive_losing_weeks": 4,
+      "partial_weeks": 2,
+      "partial_week_ids": [
+        "2025-W01",
+        "2026-W01"
+      ],
+      "off_weekday_net_usd": 0.0,
+      "cross_utc_date_trades": 0,
+      "exits_after_45_minutes": 0,
+      "ambiguous_minutes": 0,
+      "exit_reasons": {
+        "target": 124,
+        "stop": 81,
+        "timeout": 7
+      }
+    },
+    "stress_skips": {
+      "opened": 212,
+      "session": 187,
+      "spread_to_risk": 4,
+      "stop_cap": 7,
+      "daily_risk_budget": 1
+    },
+    "failed_gates": [
+      "base_profit_factor",
+      "stress_profit_factor",
+      "positive_weeks_below_50"
+    ],
+    "eligible": false
+  },
+  "selection": {
+    "candidate_id": "sweep_24_stop1.25_rr1.00",
+    "development_gate_passed": false,
+    "validation_gate_passed": false,
+    "reason": "Failed gates; development leader retained, not validated",
+    "protocol_sha256": "60a39b4eb1d9b5a106fa17e8f2407a1c70cb1546a4620837607b5070ddbb06e9",
+    "model": {
+      "research/high_win/PLAN.md": "60a39b4eb1d9b5a106fa17e8f2407a1c70cb1546a4620837607b5070ddbb06e9",
+      "research/high_win/signals.py": "aee913b9c94d08001952ac8ecf3634ee85ac366b563b6094fcb0632fee99ebf8",
+      "research/high_win/engine.py": "5d8c9ba7af81df68fd24715d1d9c9d102b996bbee767f6e09a2bfc86d0d14b4a",
+      "research/high_win/study.py": "5ea316932e27fe0dbaebc8b021b7d0daf4a865ce2bce8abc7097223b4b57b930",
+      "research/high_win/replay_ticks.py": "bf8f12ad8c9c0118ad156d45382b16fbe0f6c0ec3a5dbb788ea4fda556a2a6ac",
+      "research/backtest_pullback.py": "638c59fa87e53fa95cc2142eb2b54c6abeccc2ce502c85962dc353a73a06d83a"
+    },
+    "validation_sha256": "9e1e150f54afb1d609476f3886bafb037f26b888cfb178f8869d14ae4bf4094e"
+  },
+  "periods": {
+    "develop": {
+      "period": [
+        "2025-01-01",
+        "2026-01-01"
+      ],
+      "candidate": {
+        "candidate": {
+          "id": "sweep_24_stop1.25_rr1.00",
+          "family": "sweep",
+          "entry_setting": 24.0,
+          "min_stop_atr": 1.25,
+          "rr": 1.0
+        },
+        "halves": {
+          "base": {
+            "H1": {
+              "trades": 136,
+              "wins": 71,
+              "losses": 65,
+              "win_rate_pct": 52.2059,
+              "net_usd": 48.742,
+              "profit_factor": 1.2254997663668454,
+              "average_win_usd": 3.730887323943466,
+              "average_loss_usd": -3.325400000000328,
+              "expected_payoff_usd": 0.3583970588232704,
+              "closed_trade_max_drawdown_usd": 35.22400000000732,
+              "max_consecutive_losses": 7,
+              "weekday_count": 129,
+              "no_trade_weekdays": 46,
+              "average_weekday_usd": 0.37784496124003697,
+              "median_weekday_usd": 0.0,
+              "worst_weekday_usd": -13.322000000000681,
+              "days_at_least_20": 0,
+              "days_at_least_20_pct": 0.0,
+              "full_week_count": 25,
+              "positive_weeks": 15,
+              "positive_weeks_pct": 60.0,
+              "average_full_week_usd": 1.8636799999999998,
+              "median_full_week_usd": 4.847,
+              "worst_full_week_usd": -22.12,
+              "weeks_at_least_100": 0,
+              "weeks_at_least_100_pct": 0.0,
+              "losing_weeks": 10,
+              "max_consecutive_losing_weeks": 5,
+              "partial_weeks": 2,
+              "partial_week_ids": [
+                "2025-W01",
+                "2025-W27"
+              ],
+              "off_weekday_net_usd": 0.0,
+              "cross_utc_date_trades": 0,
+              "exits_after_45_minutes": 0,
+              "ambiguous_minutes": 0,
+              "exit_reasons": {
+                "stop": 54,
+                "target": 62,
+                "timeout": 20
+              }
+            },
+            "H2": {
+              "trades": 135,
+              "wins": 68,
+              "losses": 67,
+              "win_rate_pct": 50.3704,
+              "net_usd": -47.016,
+              "profit_factor": 0.8600314375534824,
+              "average_win_usd": 4.248352941176279,
+              "average_loss_usd": -5.013492537313815,
+              "expected_payoff_usd": -0.34826666666695283,
+              "closed_trade_max_drawdown_usd": 85.28600000001133,
+              "max_consecutive_losses": 8,
+              "weekday_count": 132,
+              "no_trade_weekdays": 45,
+              "average_weekday_usd": -0.35618181818211087,
+              "median_weekday_usd": 0.0,
+              "worst_weekday_usd": -23.99600000000111,
+              "days_at_least_20": 0,
+              "days_at_least_20_pct": 0.0,
+              "full_week_count": 25,
+              "positive_weeks": 9,
+              "positive_weeks_pct": 36.0,
+              "average_full_week_usd": -2.46548,
+              "median_full_week_usd": -0.89,
+              "worst_full_week_usd": -35.635,
+              "weeks_at_least_100": 0,
+              "weeks_at_least_100_pct": 0.0,
+              "losing_weeks": 15,
+              "max_consecutive_losing_weeks": 4,
+              "partial_weeks": 2,
+              "partial_week_ids": [
+                "2025-W27",
+                "2026-W01"
+              ],
+              "off_weekday_net_usd": 0.0,
+              "cross_utc_date_trades": 0,
+              "exits_after_45_minutes": 0,
+              "ambiguous_minutes": 0,
+              "exit_reasons": {
+                "timeout": 18,
+                "stop": 61,
+                "target": 56
+              }
+            }
+          },
+          "stress": {
+            "H1": {
+              "trades": 136,
+              "wins": 71,
+              "losses": 65,
+              "win_rate_pct": 52.2059,
+              "net_usd": 36.346,
+              "profit_factor": 1.1586115705363789,
+              "average_win_usd": 3.7393943661970805,
+              "average_loss_usd": -3.525400000000146,
+              "expected_payoff_usd": 0.2672499999998767,
+              "closed_trade_max_drawdown_usd": 37.82400000000405,
+              "max_consecutive_losses": 7,
+              "weekday_count": 129,
+              "no_trade_weekdays": 46,
+              "average_weekday_usd": 0.28175193798436615,
+              "median_weekday_usd": 0.0,
+              "worst_weekday_usd": -13.922000000000136,
+              "days_at_least_20": 0,
+              "days_at_least_20_pct": 0.0,
+              "full_week_count": 25,
+              "positive_weeks": 15,
+              "positive_weeks_pct": 60.0,
+              "average_full_week_usd": 1.3718400000000002,
+              "median_full_week_usd": 4.747,
+              "worst_full_week_usd": -23.22,
+              "weeks_at_least_100": 0,
+              "weeks_at_least_100_pct": 0.0,
+              "losing_weeks": 10,
+              "max_consecutive_losing_weeks": 5,
+              "partial_weeks": 2,
+              "partial_week_ids": [
+                "2025-W01",
+                "2025-W27"
+              ],
+              "off_weekday_net_usd": 0.0,
+              "cross_utc_date_trades": 0,
+              "exits_after_45_minutes": 0,
+              "ambiguous_minutes": 0,
+              "exit_reasons": {
+                "stop": 54,
+                "target": 61,
+                "timeout": 21
+              }
+            },
+            "H2": {
+              "trades": 135,
+              "wins": 67,
+              "losses": 68,
+              "win_rate_pct": 49.6296,
+              "net_usd": -57.217,
+              "profit_factor": 0.8362191606722597,
+              "average_win_usd": 4.360208955223994,
+              "average_loss_usd": -5.13751470588223,
+              "expected_payoff_usd": -0.42382962962951176,
+              "closed_trade_max_drawdown_usd": 91.46099999997878,
+              "max_consecutive_losses": 8,
+              "weekday_count": 132,
+              "no_trade_weekdays": 45,
+              "average_weekday_usd": -0.4334621212120006,
+              "median_weekday_usd": 0.0,
+              "worst_weekday_usd": -24.595999999997836,
+              "days_at_least_20": 0,
+              "days_at_least_20_pct": 0.0,
+              "full_week_count": 25,
+              "positive_weeks": 9,
+              "positive_weeks_pct": 36.0,
+              "average_full_week_usd": -2.86552,
+              "median_full_week_usd": -1.59,
+              "worst_full_week_usd": -36.435,
+              "weeks_at_least_100": 0,
+              "weeks_at_least_100_pct": 0.0,
+              "losing_weeks": 15,
+              "max_consecutive_losing_weeks": 4,
+              "partial_weeks": 2,
+              "partial_week_ids": [
+                "2025-W27",
+                "2026-W01"
+              ],
+              "off_weekday_net_usd": 0.0,
+              "cross_utc_date_trades": 0,
+              "exits_after_45_minutes": 0,
+              "ambiguous_minutes": 0,
+              "exit_reasons": {
+                "timeout": 18,
+                "stop": 61,
+                "target": 56
+              }
+            }
+          }
+        },
+        "base": {
+          "trades": 271,
+          "wins": 139,
+          "losses": 132,
+          "win_rate_pct": 51.2915,
+          "net_usd": 1.726,
+          "profit_factor": 1.0031265000768512,
+          "average_win_usd": 3.984035971222828,
+          "average_loss_usd": -4.182234848485204,
+          "expected_payoff_usd": 0.006369003689764331,
+          "closed_trade_max_drawdown_usd": 85.2860000000114,
+          "max_consecutive_losses": 8,
+          "weekday_count": 261,
+          "no_trade_weekdays": 91,
+          "average_weekday_usd": 0.006613026819640351,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -23.99600000000111,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 51,
+          "positive_weeks": 25,
+          "positive_weeks_pct": 49.01960784313726,
+          "average_full_week_usd": -0.18558823529411772,
+          "median_full_week_usd": 0.0,
+          "worst_full_week_usd": -35.635,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 25,
+          "max_consecutive_losing_weeks": 5,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W01",
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 115,
+            "target": 118,
+            "timeout": 38
+          }
+        },
+        "base_skips": {
+          "session": 309,
+          "opened": 271,
+          "stop_cap": 3,
+          "position_open": 10,
+          "daily_risk_budget": 1,
+          "spread": 1
+        },
+        "stress": {
+          "trades": 271,
+          "wins": 138,
+          "losses": 133,
+          "win_rate_pct": 50.9225,
+          "net_usd": -20.871,
+          "profit_factor": 0.9639223373471468,
+          "average_win_usd": 4.040804347826089,
+          "average_loss_usd": -4.34963909774437,
+          "expected_payoff_usd": -0.07701476014760462,
+          "closed_trade_max_drawdown_usd": 91.4609999999788,
+          "max_consecutive_losses": 8,
+          "weekday_count": 261,
+          "no_trade_weekdays": 91,
+          "average_weekday_usd": -0.07996551724138258,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -24.595999999997836,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 51,
+          "positive_weeks": 25,
+          "positive_weeks_pct": 49.01960784313726,
+          "average_full_week_usd": -0.6325882352941177,
+          "median_full_week_usd": 0.0,
+          "worst_full_week_usd": -36.435,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 25,
+          "max_consecutive_losing_weeks": 5,
+          "partial_weeks": 2,
+          "partial_week_ids": [
+            "2025-W01",
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 115,
+            "target": 117,
+            "timeout": 39
+          }
+        },
+        "stress_skips": {
+          "session": 309,
+          "opened": 271,
+          "stop_cap": 3,
+          "position_open": 10,
+          "daily_risk_budget": 1,
+          "spread": 1
+        },
+        "failed_gates": [
+          "win_rate_below_60",
+          "base_profit_factor",
+          "stress_profit_factor",
+          "negative_half_year",
+          "positive_weeks_below_50"
+        ],
+        "eligible": false
+      }
+    },
+    "validate": {
+      "period": [
+        "2026-01-01",
+        "2026-06-01"
+      ],
+      "candidate": {
+        "candidate": {
+          "id": "sweep_24_stop1.25_rr1.00",
+          "family": "sweep",
+          "entry_setting": 24.0,
+          "min_stop_atr": 1.25,
+          "rr": 1.0
+        },
+        "base": {
+          "trades": 106,
+          "wins": 48,
+          "losses": 58,
+          "win_rate_pct": 45.283,
+          "net_usd": -103.437,
+          "profit_factor": 0.7599540501966231,
+          "average_win_usd": 6.822249999999828,
+          "average_loss_usd": -7.429396551724499,
+          "expected_payoff_usd": -0.9758207547172565,
+          "closed_trade_max_drawdown_usd": 123.10800000002872,
+          "max_consecutive_losses": 6,
+          "weekday_count": 107,
+          "no_trade_weekdays": 36,
+          "average_weekday_usd": -0.9667009345797121,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -22.60100000000064,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 21,
+          "positive_weeks": 7,
+          "positive_weeks_pct": 33.333333333333336,
+          "average_full_week_usd": -4.925571428571429,
+          "median_full_week_usd": -4.654,
+          "worst_full_week_usd": -32.665,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 13,
+          "max_consecutive_losing_weeks": 6,
+          "partial_weeks": 1,
+          "partial_week_ids": [
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 53,
+            "target": 43,
+            "timeout": 10
+          }
+        },
+        "base_skips": {
+          "opened": 106,
+          "session": 120,
+          "position_open": 7,
+          "stop_cap": 12
+        },
+        "stress": {
+          "trades": 105,
+          "wins": 47,
+          "losses": 58,
+          "win_rate_pct": 44.7619,
+          "net_usd": -123.898,
+          "profit_factor": 0.7200076835291058,
+          "average_win_usd": 6.778872340425882,
+          "average_loss_usd": -7.629396551723407,
+          "expected_payoff_usd": -1.1799809523803921,
+          "closed_trade_max_drawdown_usd": 143.86799999994133,
+          "max_consecutive_losses": 6,
+          "weekday_count": 107,
+          "no_trade_weekdays": 36,
+          "average_weekday_usd": -1.15792523364431,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -23.000999999998456,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 21,
+          "positive_weeks": 7,
+          "positive_weeks_pct": 33.333333333333336,
+          "average_full_week_usd": -5.899904761904762,
+          "median_full_week_usd": -6.465,
+          "worst_full_week_usd": -33.565,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 13,
+          "max_consecutive_losing_weeks": 6,
+          "partial_weeks": 1,
+          "partial_week_ids": [
+            "2026-W01"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 0,
+          "exit_reasons": {
+            "stop": 53,
+            "target": 42,
+            "timeout": 10
+          }
+        },
+        "stress_skips": {
+          "opened": 105,
+          "session": 120,
+          "position_open": 7,
+          "stop_cap": 12,
+          "daily_risk_budget": 1
+        },
+        "failed_gates": [
+          "win_rate_below_60",
+          "base_profit_factor",
+          "stress_profit_factor"
+        ],
+        "eligible": false
+      }
+    },
+    "check": {
+      "period": [
+        "2026-06-01",
+        "2026-09-01"
+      ],
+      "candidate": {
+        "candidate": {
+          "id": "sweep_24_stop1.25_rr1.00",
+          "family": "sweep",
+          "entry_setting": 24.0,
+          "min_stop_atr": 1.25,
+          "rr": 1.0
+        },
+        "base": {
+          "trades": 84,
+          "wins": 41,
+          "losses": 43,
+          "win_rate_pct": 48.8095,
+          "net_usd": -37.052,
+          "profit_factor": 0.8533279497105539,
+          "average_win_usd": 5.257707317072996,
+          "average_loss_usd": -5.874837209302656,
+          "expected_payoff_usd": -0.44109523809549256,
+          "closed_trade_max_drawdown_usd": 87.78200000000918,
+          "max_consecutive_losses": 6,
+          "weekday_count": 66,
+          "no_trade_weekdays": 18,
+          "average_weekday_usd": -0.5613939393942632,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -24.698000000001336,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 13,
+          "positive_weeks": 4,
+          "positive_weeks_pct": 30.76923076923077,
+          "average_full_week_usd": -3.350076923076923,
+          "median_full_week_usd": -3.804,
+          "worst_full_week_usd": -39.316,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 9,
+          "max_consecutive_losing_weeks": 6,
+          "partial_weeks": 1,
+          "partial_week_ids": [
+            "2026-W36"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 1,
+          "exit_reasons": {
+            "stop": 37,
+            "target": 37,
+            "timeout": 9,
+            "both_hit_stop_first": 1
+          }
+        },
+        "base_skips": {
+          "opened": 84,
+          "position_open": 5,
+          "session": 75,
+          "daily_risk_budget": 2
+        },
+        "base_weeks": {
+          "2026-W23": {
+            "net_usd": 8.221,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W24": {
+            "net_usd": -5.672,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W25": {
+            "net_usd": -8.403,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W26": {
+            "net_usd": -1.759,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W27": {
+            "net_usd": -2.155,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W28": {
+            "net_usd": -39.316,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W29": {
+            "net_usd": -13.795,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W30": {
+            "net_usd": 12.537,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W31": {
+            "net_usd": 20.886,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W32": {
+            "net_usd": -16.192,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W33": {
+            "net_usd": -9.229,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W34": {
+            "net_usd": 15.13,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W35": {
+            "net_usd": -3.804,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W36": {
+            "net_usd": 6.499,
+            "complete": false,
+            "days": 1
+          }
+        },
+        "base_days": {
+          "2026-06-01": 7.284,
+          "2026-06-02": 5.127,
+          "2026-06-03": -0.003,
+          "2026-06-04": -4.187,
+          "2026-06-05": 0.0,
+          "2026-06-06": 0.0,
+          "2026-06-07": 0.0,
+          "2026-06-08": 0.901,
+          "2026-06-09": -6.573,
+          "2026-06-10": 0.0,
+          "2026-06-11": 0.0,
+          "2026-06-12": 0.0,
+          "2026-06-13": 0.0,
+          "2026-06-14": 0.0,
+          "2026-06-15": -12.593,
+          "2026-06-16": 0.0,
+          "2026-06-17": 5.771,
+          "2026-06-18": 0.0,
+          "2026-06-19": -1.581,
+          "2026-06-20": 0.0,
+          "2026-06-21": 0.0,
+          "2026-06-22": 5.079,
+          "2026-06-23": -6.838,
+          "2026-06-24": 0.0,
+          "2026-06-25": 0.0,
+          "2026-06-26": 0.0,
+          "2026-06-27": 0.0,
+          "2026-06-28": 0.0,
+          "2026-06-29": 6.271,
+          "2026-06-30": -1.592,
+          "2026-07-01": -10.646,
+          "2026-07-02": 0.0,
+          "2026-07-03": 3.812,
+          "2026-07-04": 0.0,
+          "2026-07-05": 0.0,
+          "2026-07-06": 1.985,
+          "2026-07-07": -18.636,
+          "2026-07-08": -24.698,
+          "2026-07-09": 2.033,
+          "2026-07-10": 0.0,
+          "2026-07-11": 0.0,
+          "2026-07-12": 0.0,
+          "2026-07-13": 0.0,
+          "2026-07-14": 5.071,
+          "2026-07-15": -12.329,
+          "2026-07-16": -10.668,
+          "2026-07-17": 4.131,
+          "2026-07-18": 0.0,
+          "2026-07-19": 0.0,
+          "2026-07-20": -1.685,
+          "2026-07-21": 8.403,
+          "2026-07-22": 5.574,
+          "2026-07-23": 0.0,
+          "2026-07-24": 0.245,
+          "2026-07-25": 0.0,
+          "2026-07-26": 0.0,
+          "2026-07-27": 5.168,
+          "2026-07-28": 5.868,
+          "2026-07-29": 0.0,
+          "2026-07-30": 5.524,
+          "2026-07-31": 4.326,
+          "2026-08-01": 0.0,
+          "2026-08-02": 0.0,
+          "2026-08-03": 10.839,
+          "2026-08-04": -4.606,
+          "2026-08-05": -11.138,
+          "2026-08-06": -3.313,
+          "2026-08-07": -7.974,
+          "2026-08-08": 0.0,
+          "2026-08-09": 0.0,
+          "2026-08-10": -8.137,
+          "2026-08-11": -4.13,
+          "2026-08-12": 8.509,
+          "2026-08-13": -4.063,
+          "2026-08-14": -1.408,
+          "2026-08-15": 0.0,
+          "2026-08-16": 0.0,
+          "2026-08-17": 8.273,
+          "2026-08-18": 13.123,
+          "2026-08-19": -6.266,
+          "2026-08-20": 0.0,
+          "2026-08-21": 0.0,
+          "2026-08-22": 0.0,
+          "2026-08-23": 0.0,
+          "2026-08-24": 0.0,
+          "2026-08-25": 5.546,
+          "2026-08-26": -5.131,
+          "2026-08-27": -4.219,
+          "2026-08-28": 0.0,
+          "2026-08-29": 0.0,
+          "2026-08-30": 0.0,
+          "2026-08-31": 6.499
+        },
+        "stress": {
+          "trades": 83,
+          "wins": 40,
+          "losses": 43,
+          "win_rate_pct": 48.1928,
+          "net_usd": -44.993,
+          "profit_factor": 0.8254508916968888,
+          "average_win_usd": 5.319350000000347,
+          "average_loss_usd": -5.99458139534833,
+          "expected_payoff_usd": -0.5420843373489674,
+          "closed_trade_max_drawdown_usd": 84.925999999983,
+          "max_consecutive_losses": 5,
+          "weekday_count": 66,
+          "no_trade_weekdays": 18,
+          "average_weekday_usd": -0.6817121212115802,
+          "median_weekday_usd": 0.0,
+          "worst_weekday_usd": -19.03599999999831,
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "full_week_count": 13,
+          "positive_weeks": 4,
+          "positive_weeks_pct": 30.76923076923077,
+          "average_full_week_usd": -3.953230769230769,
+          "median_full_week_usd": -4.104,
+          "worst_full_week_usd": -32.653,
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "losing_weeks": 9,
+          "max_consecutive_losing_weeks": 6,
+          "partial_weeks": 1,
+          "partial_week_ids": [
+            "2026-W36"
+          ],
+          "off_weekday_net_usd": 0.0,
+          "cross_utc_date_trades": 0,
+          "exits_after_45_minutes": 0,
+          "ambiguous_minutes": 1,
+          "exit_reasons": {
+            "stop": 37,
+            "target": 35,
+            "timeout": 10,
+            "both_hit_stop_first": 1
+          }
+        },
+        "stress_skips": {
+          "opened": 83,
+          "position_open": 5,
+          "session": 75,
+          "daily_risk_budget": 3
+        },
+        "stress_weeks": {
+          "2026-W23": {
+            "net_usd": 7.72,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W24": {
+            "net_usd": -5.972,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W25": {
+            "net_usd": -9.003,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W26": {
+            "net_usd": -3.166,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W27": {
+            "net_usd": -2.655,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W28": {
+            "net_usd": -32.653,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W29": {
+            "net_usd": -14.295,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W30": {
+            "net_usd": 12.537,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W31": {
+            "net_usd": 20.786,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W32": {
+            "net_usd": -16.892,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W33": {
+            "net_usd": -10.029,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W34": {
+            "net_usd": 6.334,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W35": {
+            "net_usd": -4.104,
+            "complete": true,
+            "days": 7
+          },
+          "2026-W36": {
+            "net_usd": 6.399,
+            "complete": false,
+            "days": 1
+          }
+        },
+        "stress_days": {
+          "2026-06-01": 6.984,
+          "2026-06-02": 5.226,
+          "2026-06-03": -0.203,
+          "2026-06-04": -4.287,
+          "2026-06-05": 0.0,
+          "2026-06-06": 0.0,
+          "2026-06-07": 0.0,
+          "2026-06-08": 0.801,
+          "2026-06-09": -6.773,
+          "2026-06-10": 0.0,
+          "2026-06-11": 0.0,
+          "2026-06-12": 0.0,
+          "2026-06-13": 0.0,
+          "2026-06-14": 0.0,
+          "2026-06-15": -12.993,
+          "2026-06-16": 0.0,
+          "2026-06-17": 5.671,
+          "2026-06-18": 0.0,
+          "2026-06-19": -1.681,
+          "2026-06-20": 0.0,
+          "2026-06-21": 0.0,
+          "2026-06-22": 3.872,
+          "2026-06-23": -7.038,
+          "2026-06-24": 0.0,
+          "2026-06-25": 0.0,
+          "2026-06-26": 0.0,
+          "2026-06-27": 0.0,
+          "2026-06-28": 0.0,
+          "2026-06-29": 6.371,
+          "2026-06-30": -1.692,
+          "2026-07-01": -11.246,
+          "2026-07-02": 0.0,
+          "2026-07-03": 3.912,
+          "2026-07-04": 0.0,
+          "2026-07-05": 0.0,
+          "2026-07-06": 1.684,
+          "2026-07-07": -19.036,
+          "2026-07-08": -17.234,
+          "2026-07-09": 1.933,
+          "2026-07-10": 0.0,
+          "2026-07-11": 0.0,
+          "2026-07-12": 0.0,
+          "2026-07-13": 0.0,
+          "2026-07-14": 5.171,
+          "2026-07-15": -12.729,
+          "2026-07-16": -10.868,
+          "2026-07-17": 4.131,
+          "2026-07-18": 0.0,
+          "2026-07-19": 0.0,
+          "2026-07-20": -1.885,
+          "2026-07-21": 8.603,
+          "2026-07-22": 5.674,
+          "2026-07-23": 0.0,
+          "2026-07-24": 0.145,
+          "2026-07-25": 0.0,
+          "2026-07-26": 0.0,
+          "2026-07-27": 5.268,
+          "2026-07-28": 5.668,
+          "2026-07-29": 0.0,
+          "2026-07-30": 5.624,
+          "2026-07-31": 4.226,
+          "2026-08-01": 0.0,
+          "2026-08-02": 0.0,
+          "2026-08-03": 11.039,
+          "2026-08-04": -4.806,
+          "2026-08-05": -11.538,
+          "2026-08-06": -3.413,
+          "2026-08-07": -8.174,
+          "2026-08-08": 0.0,
+          "2026-08-09": 0.0,
+          "2026-08-10": -8.537,
+          "2026-08-11": -4.33,
+          "2026-08-12": 8.609,
+          "2026-08-13": -4.263,
+          "2026-08-14": -1.508,
+          "2026-08-15": 0.0,
+          "2026-08-16": 0.0,
+          "2026-08-17": -0.523,
+          "2026-08-18": 13.323,
+          "2026-08-19": -6.466,
+          "2026-08-20": 0.0,
+          "2026-08-21": 0.0,
+          "2026-08-22": 0.0,
+          "2026-08-23": 0.0,
+          "2026-08-24": 0.0,
+          "2026-08-25": 5.646,
+          "2026-08-26": -5.331,
+          "2026-08-27": -4.419,
+          "2026-08-28": 0.0,
+          "2026-08-29": 0.0,
+          "2026-08-30": 0.0,
+          "2026-08-31": 6.399
+        }
+      }
+    }
+  },
+  "native_tick_check": {
+    "assumptions": {
+      "clock": "TimeCurrent/POSITION_TIME-compatible whole seconds; every tick is processed in original millisecond order, never coalesced. Trade timestamps are second-resolution.",
+      "costs": "Fixed 0.01 lot, 100 oz contract, USD 0.04 round-trip commission; adverse slippage is .05 base or .15 stress.",
+      "execution": "Public native quote order with instant simulated fills; BUY uses Ask and SELL uses Bid.",
+      "exits": "SL uses the triggering public quote plus adverse slippage; TP fills at its target; no OHLC SL-first rule is used.",
+      "limits": "No latency, rejection, partial fill, margin, swap, or broker-specific stop/freeze-level simulation.",
+      "signal_bars": "Completed M1-derived M5 and M15 bars only; December 2024 is included as indicator warmup."
+    },
+    "candidate": {
+      "entry_setting": 24.0,
+      "family": "sweep",
+      "id": "sweep_24_stop1.25_rr1.00",
+      "min_stop_atr": 1.25,
+      "rr": 1.0
+    },
+    "label": "Custom public-tick replay of XAUUSD, NOT MT5 Strategy Tester.",
+    "m1_minutes_loaded": 616216,
+    "requested_period": {
+      "end": "2026-09-01",
+      "end_epoch": 1788220800,
+      "start": "2026-06-01",
+      "start_epoch": 1780272000
+    },
+    "scenarios": {
+      "base": {
+        "costs": {
+          "commission": 0.04,
+          "contract_size": 100,
+          "lots": 0.01,
+          "slippage": 0.05,
+          "tick": 0.001
+        },
+        "metrics": {
+          "ambiguous_minutes": 0,
+          "average_full_week_usd": -3.6056153846153842,
+          "average_loss_usd": -5.952093023256158,
+          "average_weekday_usd": -0.6117272727276052,
+          "average_win_usd": 5.257707317072996,
+          "closed_trade_max_drawdown_usd": 89.03100000001079,
+          "cross_utc_date_trades": 0,
+          "days": {
+            "2026-06-01": 5.825,
+            "2026-06-02": 5.116,
+            "2026-06-03": -0.003,
+            "2026-06-04": -4.201,
+            "2026-06-05": 0.0,
+            "2026-06-06": 0.0,
+            "2026-06-07": 0.0,
+            "2026-06-08": 0.881,
+            "2026-06-09": -6.743,
+            "2026-06-10": 0.0,
+            "2026-06-11": 0.0,
+            "2026-06-12": 0.0,
+            "2026-06-13": 0.0,
+            "2026-06-14": 0.0,
+            "2026-06-15": -12.786,
+            "2026-06-16": 0.0,
+            "2026-06-17": 5.771,
+            "2026-06-18": 0.0,
+            "2026-06-19": -1.645,
+            "2026-06-20": 0.0,
+            "2026-06-21": 0.0,
+            "2026-06-22": 5.079,
+            "2026-06-23": -6.871,
+            "2026-06-24": 0.0,
+            "2026-06-25": 0.0,
+            "2026-06-26": 0.0,
+            "2026-06-27": 0.0,
+            "2026-06-28": 0.0,
+            "2026-06-29": 6.271,
+            "2026-06-30": -1.848,
+            "2026-07-01": -10.782,
+            "2026-07-02": 0.0,
+            "2026-07-03": 3.812,
+            "2026-07-04": 0.0,
+            "2026-07-05": 0.0,
+            "2026-07-06": 2.237,
+            "2026-07-07": -18.776,
+            "2026-07-08": -25.035,
+            "2026-07-09": 2.033,
+            "2026-07-10": 0.0,
+            "2026-07-11": 0.0,
+            "2026-07-12": 0.0,
+            "2026-07-13": 0.0,
+            "2026-07-14": 5.071,
+            "2026-07-15": -12.456,
+            "2026-07-16": -10.668,
+            "2026-07-17": 4.088,
+            "2026-07-18": 0.0,
+            "2026-07-19": 0.0,
+            "2026-07-20": -1.685,
+            "2026-07-21": 8.403,
+            "2026-07-22": 5.574,
+            "2026-07-23": 0.0,
+            "2026-07-24": 0.192,
+            "2026-07-25": 0.0,
+            "2026-07-26": 0.0,
+            "2026-07-27": 5.168,
+            "2026-07-28": 5.868,
+            "2026-07-29": 0.0,
+            "2026-07-30": 5.524,
+            "2026-07-31": 4.315,
+            "2026-08-01": 0.0,
+            "2026-08-02": 0.0,
+            "2026-08-03": 10.839,
+            "2026-08-04": -4.609,
+            "2026-08-05": -11.197,
+            "2026-08-06": -3.343,
+            "2026-08-07": -8.012,
+            "2026-08-08": 0.0,
+            "2026-08-09": 0.0,
+            "2026-08-10": -8.212,
+            "2026-08-11": -4.175,
+            "2026-08-12": 8.509,
+            "2026-08-13": -4.111,
+            "2026-08-14": -1.443,
+            "2026-08-15": 0.0,
+            "2026-08-16": 0.0,
+            "2026-08-17": 8.273,
+            "2026-08-18": 13.123,
+            "2026-08-19": -6.304,
+            "2026-08-20": 0.0,
+            "2026-08-21": 0.0,
+            "2026-08-22": 0.0,
+            "2026-08-23": 0.0,
+            "2026-08-24": 0.0,
+            "2026-08-25": 5.546,
+            "2026-08-26": -5.267,
+            "2026-08-27": -4.219,
+            "2026-08-28": 0.0,
+            "2026-08-29": 0.0,
+            "2026-08-30": 0.0,
+            "2026-08-31": 6.499
+          },
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "exit_reasons": {
+            "stop_tick": 38,
+            "target": 37,
+            "timeout": 9
+          },
+          "exits_after_45_minutes": 0,
+          "expected_payoff_usd": -0.4806428571431184,
+          "full_week_count": 13,
+          "losing_weeks": 9,
+          "losses": 43,
+          "max_consecutive_losing_weeks": 6,
+          "max_consecutive_losses": 6,
+          "median_full_week_usd": -3.94,
+          "median_weekday_usd": 0.0,
+          "net_usd": -40.374,
+          "no_trade_weekdays": 18,
+          "off_weekday_net_usd": 0.0,
+          "partial_week_ids": [
+            "2026-W36"
+          ],
+          "partial_weeks": 1,
+          "positive_weeks": 4,
+          "positive_weeks_pct": 30.76923076923077,
+          "profit_factor": 0.8422520903335954,
+          "trades": 84,
+          "weekday_count": 66,
+          "weeks": {
+            "2026-W23": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 6.737
+            },
+            "2026-W24": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -5.862
+            },
+            "2026-W25": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -8.66
+            },
+            "2026-W26": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -1.792
+            },
+            "2026-W27": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -2.547
+            },
+            "2026-W28": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -39.541
+            },
+            "2026-W29": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -13.965
+            },
+            "2026-W30": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 12.484
+            },
+            "2026-W31": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 20.875
+            },
+            "2026-W32": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -16.322
+            },
+            "2026-W33": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -9.432
+            },
+            "2026-W34": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 15.092
+            },
+            "2026-W35": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -3.94
+            },
+            "2026-W36": {
+              "complete": false,
+              "days": 1,
+              "net_usd": 6.499
+            }
+          },
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "win_rate_pct": 48.8095,
+          "wins": 41,
+          "worst_full_week_usd": -39.541,
+          "worst_weekday_usd": -25.035000000000416
+        },
+        "portfolio_quotes": 11835811,
+        "skips": {
+          "daily_risk_budget": 2,
+          "opened": 84,
+          "position_open": 5
+        },
+        "trades_csv": "base_trades.csv"
+      },
+      "stress": {
+        "costs": {
+          "commission": 0.04,
+          "contract_size": 100,
+          "lots": 0.01,
+          "slippage": 0.15,
+          "tick": 0.001
+        },
+        "metrics": {
+          "ambiguous_minutes": 0,
+          "average_full_week_usd": -4.2160769230769235,
+          "average_loss_usd": -6.07404651162744,
+          "average_weekday_usd": -0.7334848484843338,
+          "average_win_usd": 5.319350000000347,
+          "closed_trade_max_drawdown_usd": 86.100999999985,
+          "cross_utc_date_trades": 0,
+          "days": {
+            "2026-06-01": 5.525,
+            "2026-06-02": 5.215,
+            "2026-06-03": -0.203,
+            "2026-06-04": -4.301,
+            "2026-06-05": 0.0,
+            "2026-06-06": 0.0,
+            "2026-06-07": 0.0,
+            "2026-06-08": 0.781,
+            "2026-06-09": -6.943,
+            "2026-06-10": 0.0,
+            "2026-06-11": 0.0,
+            "2026-06-12": 0.0,
+            "2026-06-13": 0.0,
+            "2026-06-14": 0.0,
+            "2026-06-15": -13.186,
+            "2026-06-16": 0.0,
+            "2026-06-17": 5.671,
+            "2026-06-18": 0.0,
+            "2026-06-19": -1.745,
+            "2026-06-20": 0.0,
+            "2026-06-21": 0.0,
+            "2026-06-22": 3.872,
+            "2026-06-23": -7.071,
+            "2026-06-24": 0.0,
+            "2026-06-25": 0.0,
+            "2026-06-26": 0.0,
+            "2026-06-27": 0.0,
+            "2026-06-28": 0.0,
+            "2026-06-29": 6.371,
+            "2026-06-30": -1.948,
+            "2026-07-01": -11.382,
+            "2026-07-02": 0.0,
+            "2026-07-03": 3.912,
+            "2026-07-04": 0.0,
+            "2026-07-05": 0.0,
+            "2026-07-06": 1.936,
+            "2026-07-07": -19.176,
+            "2026-07-08": -17.497,
+            "2026-07-09": 1.933,
+            "2026-07-10": 0.0,
+            "2026-07-11": 0.0,
+            "2026-07-12": 0.0,
+            "2026-07-13": 0.0,
+            "2026-07-14": 5.171,
+            "2026-07-15": -12.856,
+            "2026-07-16": -10.868,
+            "2026-07-17": 4.088,
+            "2026-07-18": 0.0,
+            "2026-07-19": 0.0,
+            "2026-07-20": -1.885,
+            "2026-07-21": 8.603,
+            "2026-07-22": 5.674,
+            "2026-07-23": 0.0,
+            "2026-07-24": 0.092,
+            "2026-07-25": 0.0,
+            "2026-07-26": 0.0,
+            "2026-07-27": 5.268,
+            "2026-07-28": 5.668,
+            "2026-07-29": 0.0,
+            "2026-07-30": 5.624,
+            "2026-07-31": 4.215,
+            "2026-08-01": 0.0,
+            "2026-08-02": 0.0,
+            "2026-08-03": 11.039,
+            "2026-08-04": -4.809,
+            "2026-08-05": -11.597,
+            "2026-08-06": -3.443,
+            "2026-08-07": -8.212,
+            "2026-08-08": 0.0,
+            "2026-08-09": 0.0,
+            "2026-08-10": -8.612,
+            "2026-08-11": -4.375,
+            "2026-08-12": 8.609,
+            "2026-08-13": -4.311,
+            "2026-08-14": -1.543,
+            "2026-08-15": 0.0,
+            "2026-08-16": 0.0,
+            "2026-08-17": -0.692,
+            "2026-08-18": 13.323,
+            "2026-08-19": -6.504,
+            "2026-08-20": 0.0,
+            "2026-08-21": 0.0,
+            "2026-08-22": 0.0,
+            "2026-08-23": 0.0,
+            "2026-08-24": 0.0,
+            "2026-08-25": 5.646,
+            "2026-08-26": -5.467,
+            "2026-08-27": -4.419,
+            "2026-08-28": 0.0,
+            "2026-08-29": 0.0,
+            "2026-08-30": 0.0,
+            "2026-08-31": 6.399
+          },
+          "days_at_least_20": 0,
+          "days_at_least_20_pct": 0.0,
+          "exit_reasons": {
+            "stop_tick": 38,
+            "target": 35,
+            "timeout": 10
+          },
+          "exits_after_45_minutes": 0,
+          "expected_payoff_usd": -0.5832530120477836,
+          "full_week_count": 13,
+          "losing_weeks": 9,
+          "losses": 43,
+          "max_consecutive_losing_weeks": 6,
+          "max_consecutive_losses": 5,
+          "median_full_week_usd": -4.24,
+          "median_weekday_usd": 0.0,
+          "net_usd": -48.41,
+          "no_trade_weekdays": 18,
+          "off_weekday_net_usd": 0.0,
+          "partial_week_ids": [
+            "2026-W36"
+          ],
+          "partial_weeks": 1,
+          "positive_weeks": 4,
+          "positive_weeks_pct": 30.76923076923077,
+          "profit_factor": 0.8146517397697802,
+          "trades": 83,
+          "weekday_count": 66,
+          "weeks": {
+            "2026-W23": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 6.236
+            },
+            "2026-W24": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -6.162
+            },
+            "2026-W25": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -9.26
+            },
+            "2026-W26": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -3.199
+            },
+            "2026-W27": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -3.047
+            },
+            "2026-W28": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -32.804
+            },
+            "2026-W29": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -14.465
+            },
+            "2026-W30": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 12.484
+            },
+            "2026-W31": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 20.775
+            },
+            "2026-W32": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -17.022
+            },
+            "2026-W33": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -10.232
+            },
+            "2026-W34": {
+              "complete": true,
+              "days": 7,
+              "net_usd": 6.127
+            },
+            "2026-W35": {
+              "complete": true,
+              "days": 7,
+              "net_usd": -4.24
+            },
+            "2026-W36": {
+              "complete": false,
+              "days": 1,
+              "net_usd": 6.399
+            }
+          },
+          "weeks_at_least_100": 0,
+          "weeks_at_least_100_pct": 0.0,
+          "win_rate_pct": 48.1928,
+          "wins": 40,
+          "worst_full_week_usd": -32.804,
+          "worst_weekday_usd": -19.175999999998638
+        },
+        "portfolio_quotes": 11835811,
+        "skips": {
+          "daily_risk_budget": 3,
+          "opened": 83,
+          "position_open": 5
+        },
+        "trades_csv": "stress_trades.csv"
+      }
+    },
+    "source": {
+      "m1_months_loaded_for_setups": [
+        {
+          "metadata_minutes": 28496,
+          "month": "2024-12",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2024-12_utc.csv",
+          "sha256": "f25cd7ed9d318b76a0498baf0efd8ce7fdb82ee262849c915fd5ff4864a9a8fe"
+        },
+        {
+          "metadata_minutes": 30019,
+          "month": "2025-01",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-01_utc.csv",
+          "sha256": "2ba2f0329ce160fc92058b3479d567082f65134b29d605aeccf9a3b1a1092484"
+        },
+        {
+          "metadata_minutes": 27351,
+          "month": "2025-02",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-02_utc.csv",
+          "sha256": "bf31b9507647c3c2c65a414d891f6ed7f38156e8fb996d6916770e8c6d9e8252"
+        },
+        {
+          "metadata_minutes": 29013,
+          "month": "2025-03",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-03_utc.csv",
+          "sha256": "863e46f4e5045737ee7433a591ee52fcbfa8cd29c483510c0f1e68fca359ac42"
+        },
+        {
+          "metadata_minutes": 28847,
+          "month": "2025-04",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-04_utc.csv",
+          "sha256": "06a11fbaf79e15a2fa69714e3795041ca81a87e1661593b7cd43a0ece9ed7eb9"
+        },
+        {
+          "metadata_minutes": 29984,
+          "month": "2025-05",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-05_utc.csv",
+          "sha256": "12946772d444531f33735337e375a73e8cf1b87b522d8cb3ff92dff257daddbf"
+        },
+        {
+          "metadata_minutes": 28780,
+          "month": "2025-06",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-06_utc.csv",
+          "sha256": "e33f9a0b4108e44b7a94b3016a052031028edc1e1930ebe79ad107755bf92715"
+        },
+        {
+          "metadata_minutes": 31383,
+          "month": "2025-07",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-07_utc.csv",
+          "sha256": "8949c657911f07181f241039ac229ba4bc9b817b694be60552dd5b2b906d8ce2"
+        },
+        {
+          "metadata_minutes": 28881,
+          "month": "2025-08",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-08_utc.csv",
+          "sha256": "d65751256f2a9ef810590402982203219ed526d626dbd974f00309fdc4e7f44e"
+        },
+        {
+          "metadata_minutes": 30096,
+          "month": "2025-09",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-09_utc.csv",
+          "sha256": "254b36dab6d99df0246636373688ca4c62df3c919c0dc38363fa5de26dc2be5f"
+        },
+        {
+          "metadata_minutes": 31518,
+          "month": "2025-10",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-10_utc.csv",
+          "sha256": "b4f26b9c80b643c05be322742a89e8f1724442ed136849986f5cdcb42caec887"
+        },
+        {
+          "metadata_minutes": 27227,
+          "month": "2025-11",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-11_utc.csv",
+          "sha256": "10b928d553ccdbfdb9791efc55b694ced6be0efb9ccc32c3aebc26b933602cc5"
+        },
+        {
+          "metadata_minutes": 29982,
+          "month": "2025-12",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2025-12_utc.csv",
+          "sha256": "abfd1087506022d4a56908498dafbabb160e2d8827dd097d1bd793c9483f903b"
+        },
+        {
+          "metadata_minutes": 28729,
+          "month": "2026-01",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-01_utc.csv",
+          "sha256": "9aef832e37a753e4c0a754611827fa5ff79c078332326e4673f9887a7710179b"
+        },
+        {
+          "metadata_minutes": 27379,
+          "month": "2026-02",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-02_utc.csv",
+          "sha256": "76c8b333018a52f52802d8e53985d08597236ecc84e8d929384bb12cc1a7dc08"
+        },
+        {
+          "metadata_minutes": 30406,
+          "month": "2026-03",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-03_utc.csv",
+          "sha256": "9db9fa2f5bca514e711f5b28e58be362046367cf4cfb4c56595f28a6a372433a"
+        },
+        {
+          "metadata_minutes": 28898,
+          "month": "2026-04",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-04_utc.csv",
+          "sha256": "76a5ef48a5e143c944f709bcb15c4f2f049a14feb49080164a8e32df6be2765f"
+        },
+        {
+          "metadata_minutes": 28773,
+          "month": "2026-05",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-05_utc.csv",
+          "sha256": "2c766784124b5dfd0396eb5a6fa259f039fb42561a88ccc4d4f5466a79a6fe85"
+        },
+        {
+          "metadata_minutes": 30073,
+          "month": "2026-06",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-06_utc.csv",
+          "sha256": "5e39ed7dcbbf9d8a723998acf9da63e29355c2a63eb9fdd5fc7928df0771eb60"
+        },
+        {
+          "metadata_minutes": 31332,
+          "month": "2026-07",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-07_utc.csv",
+          "sha256": "db93ba4e332945e69073c835985e8bdad87111b9bee0d554f9203809b87766c5"
+        },
+        {
+          "metadata_minutes": 29049,
+          "month": "2026-08",
+          "path": ".hoplite/artifacts/xau-research/exness/xauusd_m1_bid_ask_2026-08_utc.csv",
+          "sha256": "4bcf1b0bb380bd74a4c7ac7b2691bfa6e7ec150df9f595314037ef94329d2962"
+        }
+      ],
+      "metadata": {
+        "path": ".hoplite/artifacts/xau-research/exness/metadata.json",
+        "sha256": "0afeb14b7889bd9d30df4bffea6ff63b3aed2fcb37d74882920c35e5b53197a5"
+      },
+      "reference": "https://www.exness.com/tick-history/",
+      "source": "Public Exness indicative tick archive, XAUUSD (no suffix)",
+      "tick_months_replayed": [
+        {
+          "metadata_ticks": 8038574,
+          "month": "2026-06",
+          "path": ".hoplite/artifacts/xau-research/exness/raw/Exness_XAUUSD_2026_06.zip",
+          "sha256": "a75d0f056e3b9f731b23102d20ac2bcee212955ae42b671d7065ace06020de58",
+          "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/06/Exness_XAUUSD_2026_06.zip"
+        },
+        {
+          "metadata_ticks": 6739207,
+          "month": "2026-07",
+          "path": ".hoplite/artifacts/xau-research/exness/raw/Exness_XAUUSD_2026_07.zip",
+          "sha256": "8e006304aefe1041e5dff33b32802c1d2bce8f818f19683f9b51a4142a5b1fd3",
+          "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/07/Exness_XAUUSD_2026_07.zip"
+        },
+        {
+          "metadata_ticks": 6493205,
+          "month": "2026-08",
+          "path": ".hoplite/artifacts/xau-research/exness/raw/Exness_XAUUSD_2026_08.zip",
+          "sha256": "f20f46fe2e793e263b7df4889ff32e192c08da3c48da7409f65cca1f768172dc",
+          "url": "https://ticks.ex2archive.com/ticks/XAUUSD/2026/08/Exness_XAUUSD_2026_08.zip"
+        }
+      ]
+    },
+    "tick_replay": {
+      "minute_epoch_cache_entries": 90454,
+      "months_replayed": [
+        {
+          "first_quote_utc": "2026-06-01 00:00:00.076Z",
+          "last_quote_utc": "2026-06-30 23:59:59.665Z",
+          "month": "2026-06",
+          "ticks_after_requested_period": 0,
+          "ticks_before_requested_period": 0,
+          "ticks_executed": 4450570,
+          "ticks_in_requested_period": 8038574,
+          "ticks_read": 8038574,
+          "ticks_skipped_flat_outside_entry_session": 3588004
+        },
+        {
+          "first_quote_utc": "2026-07-01 00:00:00.278Z",
+          "last_quote_utc": "2026-07-31 20:57:59.698Z",
+          "month": "2026-07",
+          "ticks_after_requested_period": 0,
+          "ticks_before_requested_period": 0,
+          "ticks_executed": 3734711,
+          "ticks_in_requested_period": 6739207,
+          "ticks_read": 6739207,
+          "ticks_skipped_flat_outside_entry_session": 3004496
+        },
+        {
+          "first_quote_utc": "2026-08-02 22:01:30.645Z",
+          "last_quote_utc": "2026-08-31 23:59:59.806Z",
+          "month": "2026-08",
+          "ticks_after_requested_period": 0,
+          "ticks_before_requested_period": 0,
+          "ticks_executed": 3650530,
+          "ticks_in_requested_period": 6493205,
+          "ticks_read": 6493205,
+          "ticks_skipped_flat_outside_entry_session": 2842675
+        }
+      ],
+      "quote_period": {
+        "max_timestamp_utc": "2026-08-31 23:59:59.806Z",
+        "min_timestamp_utc": "2026-06-01 00:00:00.076Z"
+      },
+      "ticks_after_requested_period": 0,
+      "ticks_before_requested_period": 0,
+      "ticks_executed": 11835811,
+      "ticks_in_requested_period": 21270986,
+      "ticks_read": 21270986,
+      "ticks_skipped_flat_outside_entry_session": 9435175
+    }
+  },
+  "source": {
+    "metadata_sha256": "0afeb14b7889bd9d30df4bffea6ff63b3aed2fcb37d74882920c35e5b53197a5",
+    "months": [
+      {
+        "month": "2024-12",
+        "csv_sha256": "f25cd7ed9d318b76a0498baf0efd8ce7fdb82ee262849c915fd5ff4864a9a8fe",
+        "zip_sha256": "e8b05c08afa9ce62f7b5ec0fdbab46a5a833c6b1cbfe9a8d63eb1fb0ad85ec95"
+      },
+      {
+        "month": "2025-01",
+        "csv_sha256": "2ba2f0329ce160fc92058b3479d567082f65134b29d605aeccf9a3b1a1092484",
+        "zip_sha256": "6282b0ea0e2fa76e7887d5b970c3faafe1d6912367c112e13658446248ed10a7"
+      },
+      {
+        "month": "2025-02",
+        "csv_sha256": "bf31b9507647c3c2c65a414d891f6ed7f38156e8fb996d6916770e8c6d9e8252",
+        "zip_sha256": "5ddb3fca1c3a5a9ecc33e86f6751100da4f01c413596b128a20461b80e98ed28"
+      },
+      {
+        "month": "2025-03",
+        "csv_sha256": "863e46f4e5045737ee7433a591ee52fcbfa8cd29c483510c0f1e68fca359ac42",
+        "zip_sha256": "847951520774be8d22418b0beb7b6ae5e43be52496d4804e1063e3cf2a94ae44"
+      },
+      {
+        "month": "2025-04",
+        "csv_sha256": "06a11fbaf79e15a2fa69714e3795041ca81a87e1661593b7cd43a0ece9ed7eb9",
+        "zip_sha256": "f31cd83857c28dd509c69943c004e8c731eaa9b96220da21b483c91a864a8ef9"
+      },
+      {
+        "month": "2025-05",
+        "csv_sha256": "12946772d444531f33735337e375a73e8cf1b87b522d8cb3ff92dff257daddbf",
+        "zip_sha256": "fe39a567b656da3fe89f7bde2e343261378f9c8a7c877c544dbf9acb4d79676a"
+      },
+      {
+        "month": "2025-06",
+        "csv_sha256": "e33f9a0b4108e44b7a94b3016a052031028edc1e1930ebe79ad107755bf92715",
+        "zip_sha256": "d8c95f93116da6d88dadbe16566dca57622efb21a249e67f8a4405ad18b57b26"
+      },
+      {
+        "month": "2025-07",
+        "csv_sha256": "8949c657911f07181f241039ac229ba4bc9b817b694be60552dd5b2b906d8ce2",
+        "zip_sha256": "2c63b0ec490bdbb4d220267292da1ecabb6bc5b3ae372cec4c057848d35f9adc"
+      },
+      {
+        "month": "2025-08",
+        "csv_sha256": "d65751256f2a9ef810590402982203219ed526d626dbd974f00309fdc4e7f44e",
+        "zip_sha256": "82bbe66dac095bcc07b1a01f21c1ea73ec8e9a50981f39403c32357df39d948a"
+      },
+      {
+        "month": "2025-09",
+        "csv_sha256": "254b36dab6d99df0246636373688ca4c62df3c919c0dc38363fa5de26dc2be5f",
+        "zip_sha256": "d60820bf200e675a0a370156e4eadd2454d217551bb716060397d54f957f6443"
+      },
+      {
+        "month": "2025-10",
+        "csv_sha256": "b4f26b9c80b643c05be322742a89e8f1724442ed136849986f5cdcb42caec887",
+        "zip_sha256": "21addd55a901b2b5938568ff5017226f4c0f34ba533d278ed1d974124306b55f"
+      },
+      {
+        "month": "2025-11",
+        "csv_sha256": "10b928d553ccdbfdb9791efc55b694ced6be0efb9ccc32c3aebc26b933602cc5",
+        "zip_sha256": "e7034c50be966adcce62c9f4b19ef81ce5b1955a6053d0318128863e423c3499"
+      },
+      {
+        "month": "2025-12",
+        "csv_sha256": "abfd1087506022d4a56908498dafbabb160e2d8827dd097d1bd793c9483f903b",
+        "zip_sha256": "6dd074d0a44cb36b8a69462d1d5a08181b18193eef6a680f0307b3081320cd40"
+      },
+      {
+        "month": "2026-01",
+        "csv_sha256": "9aef832e37a753e4c0a754611827fa5ff79c078332326e4673f9887a7710179b",
+        "zip_sha256": "2f702ce91ede2dda42cad8973ca499f57e49ea5984a219ae3916913ff66989d2"
+      },
+      {
+        "month": "2026-02",
+        "csv_sha256": "76c8b333018a52f52802d8e53985d08597236ecc84e8d929384bb12cc1a7dc08",
+        "zip_sha256": "41e027a4cdae257dc3adfc97eadc35570423e1e7cf18f1740c1f1e66452edc46"
+      },
+      {
+        "month": "2026-03",
+        "csv_sha256": "9db9fa2f5bca514e711f5b28e58be362046367cf4cfb4c56595f28a6a372433a",
+        "zip_sha256": "9645374633bbfaaa9e67afea63f9af414a1e55c6deb0a10af57e9275b1502957"
+      },
+      {
+        "month": "2026-04",
+        "csv_sha256": "76a5ef48a5e143c944f709bcb15c4f2f049a14feb49080164a8e32df6be2765f",
+        "zip_sha256": "d38044a25462cc7aa53835e8ae21e36f5422da668ef3dbc0bd283562478abf2b"
+      },
+      {
+        "month": "2026-05",
+        "csv_sha256": "2c766784124b5dfd0396eb5a6fa259f039fb42561a88ccc4d4f5466a79a6fe85",
+        "zip_sha256": "bac2794939e0ce8e3264f11086f618296c78740c91293a8b318e78a517fd05b0"
+      },
+      {
+        "month": "2026-06",
+        "csv_sha256": "5e39ed7dcbbf9d8a723998acf9da63e29355c2a63eb9fdd5fc7928df0771eb60",
+        "zip_sha256": "a75d0f056e3b9f731b23102d20ac2bcee212955ae42b671d7065ace06020de58"
+      },
+      {
+        "month": "2026-07",
+        "csv_sha256": "db93ba4e332945e69073c835985e8bdad87111b9bee0d554f9203809b87766c5",
+        "zip_sha256": "8e006304aefe1041e5dff33b32802c1d2bce8f818f19683f9b51a4142a5b1fd3"
+      },
+      {
+        "month": "2026-08",
+        "csv_sha256": "4bcf1b0bb380bd74a4c7ac7b2691bfa6e7ec150df9f595314037ef94329d2962",
+        "zip_sha256": "f20f46fe2e793e263b7df4889ff32e192c08da3c48da7409f65cca1f768172dc"
+      }
+    ]
+  },
+  "artifacts": {
+    "develop.json": "1b1bb35b069d87df880e71fcb688a0567aae61e2aaaa24c9654fd8b17c4cf757",
+    "validate.json": "9e1e150f54afb1d609476f3886bafb037f26b888cfb178f8869d14ae4bf4094e",
+    "check.json": "e7343a6d97b5f09bda8fe5ae98c266eb1d84659f9edee2b3dbb367eaea9094dd",
+    "lock.json": "eea8618b3fb949d8b749ad0ae7e4aacda3a8112fc98a0244e3785ff0fe916efe",
+    "tick-check/results.json": "4e8df8ae2be971d0ed7f1536b75ba1a16cbc8343c99f552fb979a59399918376"
+  },
+  "audited_rerun": {
+    "identical_trade_files": 76,
+    "audit_sha256": "6368abd9dae1f80fe51c1596a436c69c9ed0ce40c6f0fbb5be37b78da2befb84"
+  }
+}

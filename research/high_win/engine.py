@@ -216,6 +216,11 @@ def summary(trades: list[dict], start: int, end: int) -> dict:
                       complete=len(days)==7, days=len(days)) for key,days in sorted(weeks.items())}
     full_week_values = [v['net_usd'] for v in weekly.values() if v['complete']]
     positive_weeks = sum(v>0 for v in full_week_values)
+    losing_weeks = sum(v<0 for v in full_week_values)
+    weekly_streak = max_weekly_streak = 0
+    for value in full_week_values:
+        weekly_streak = weekly_streak+1 if value<0 else 0
+        max_weekly_streak = max(max_weekly_streak,weekly_streak)
     return dict(trades=len(trades), wins=len(profits), losses=len(losses),
                 win_rate_pct=round(100*len(profits)/len(trades), 4) if trades else 0,
                 net_usd=round(sum(pnl), 6), profit_factor=sum(profits)/-sum(losses) if losses else None,
@@ -227,13 +232,17 @@ def summary(trades: list[dict], start: int, end: int) -> dict:
                 median_weekday_usd=median(day_values) if day_values else 0,
                 worst_weekday_usd=min(day_values) if day_values else 0,
                 days_at_least_20=sum(v>=20 for v in day_values),
+                days_at_least_20_pct=100*sum(v>=20 for v in day_values)/len(day_values) if day_values else 0,
                 full_week_count=len(full_week_values), positive_weeks=positive_weeks,
                 positive_weeks_pct=100*positive_weeks/len(full_week_values) if full_week_values else 0,
                 average_full_week_usd=mean(full_week_values) if full_week_values else 0,
                 median_full_week_usd=median(full_week_values) if full_week_values else 0,
                 worst_full_week_usd=min(full_week_values) if full_week_values else 0,
                 weeks_at_least_100=sum(v>=100 for v in full_week_values),
+                weeks_at_least_100_pct=100*sum(v>=100 for v in full_week_values)/len(full_week_values) if full_week_values else 0,
+                losing_weeks=losing_weeks, max_consecutive_losing_weeks=max_weekly_streak,
                 partial_weeks=sum(not v['complete'] for v in weekly.values()),
+                partial_week_ids=[key for key,v in weekly.items() if not v['complete']],
                 off_weekday_net_usd=sum(daily[d.isoformat()] for d in dates if d.weekday()>=5),
                 cross_utc_date_trades=sum(t['cross_utc_date'] for t in trades),
                 exits_after_45_minutes=sum(t['hold_minutes']>45 for t in trades),

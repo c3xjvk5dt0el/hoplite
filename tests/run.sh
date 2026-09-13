@@ -23,7 +23,7 @@ if grep -nE 'BuyStop|SellStop|InpEntryBufferATR|InpPendingBars|ORDER_TIME_SPECIF
 fi
 echo 'PASS: market BUY/SELL with attached protection and default RR 1:1.'
 binary="$(mktemp /tmp/momentum-core-test.XXXXXX)"
-trap 'rm -f "$binary" "${pullback_binary:-}"' EXIT
+trap 'rm -f "$binary" "${pullback_binary:-}" "${sweep_binary:-}"' EXIT
 g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic -fsanitize=undefined \
   tests/momentum_core_test.cpp -o "$binary"
 "$binary"
@@ -42,4 +42,20 @@ pullback_binary="$(mktemp /tmp/pullback-core-test.XXXXXX)"
 g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic -fsanitize=undefined \
   tests/trend_pullback_test.cpp -o "$pullback_binary"
 "$pullback_binary"
-python3 -m unittest discover -s tests -p 'test_pullback_research.py' -v
+
+sweep=Experts/SweepReclaimXAU/SweepReclaimXAU.mq5
+includes="$(grep -E '^[[:space:]]*#include[[:space:]]' "$sweep")"
+[[ "$includes" == '#include <Trade\Trade.mqh>' ]]
+grep -q '^input double InpFixedLots = 0.01;' "$sweep"
+grep -q '^input double InpRewardRisk = 1.0;' "$sweep"
+grep -q '^input bool InpAllowLiveTrading = false;' "$sweep"
+if grep -nE 'BuyStop|SellStop|BuyLimit|SellLimit|ACCOUNT_EQUITY|ACCOUNT_BALANCE' "$sweep"; then
+  echo 'FAIL: sweep fallback must retain fixed market volume and no equity sizing.' >&2
+  exit 1
+fi
+echo 'PASS: separate standalone sweep fallback, 0.01 lot, RR 1:1, live disabled by default.'
+sweep_binary="$(mktemp /tmp/sweep-core-test.XXXXXX)"
+g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic -fsanitize=undefined \
+  tests/sweep_reclaim_test.cpp -o "$sweep_binary"
+"$sweep_binary"
+python3 -m unittest discover -s tests -p 'test_*.py' -v
