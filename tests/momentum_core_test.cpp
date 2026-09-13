@@ -77,22 +77,25 @@ int main()
     check(!MomentumLevels(true, 3006, 2999, 5, .3, 0, .1, .15, 2, entry, sl, tp), "zero tick");
     check(!MomentumLevels(true, 2999, 3006, 5, .3, .01, .1, .15, 2, entry, sl, tp), "reversed range");
 
-    check(near(RiskVolume(5, 855, .01, 1, .01), 0), "never force minimum lot over risk");
-    check(near(RiskVolume(nan, 855, .01, 1, .01), 0), "reject NaN budget");
-    check(near(RiskVolume(5, inf, .01, 1, .01), 0), "reject infinite loss");
-    check(near(RiskVolume(5, 855, .01, 1, nan), 0), "reject NaN volume step");
-    check(near(RiskVolume(10, 855, .01, 1, .01), .01), "round lot down");
-    check(near(RiskVolume(100, 1000, .01, 1, .01), .1), "exact lot boundary");
-    check(near(RiskVolume(99.999, 1000, .01, 1, .01), .09), "below lot boundary");
-    check(near(RiskVolume(1000, 1000, .01, .5, .01), .5), "maximum lot cap");
-    check(near(RiskVolume(1000, 1000, .01, .025, .01), .02), "non-grid max lot");
-    check(near(RiskVolume(1000, 1000, .001, 1, .001), 1), "three-decimal lot step");
-    check(near(RiskVolume(99, 100, .25, 10, .25), .75), "nondecimal lot step");
-    check(near(RiskVolume(100, 0, .01, 1, .01), 0), "invalid loss estimate");
-    check(near(RiskVolume(100, 1000, .1, .01, .01), 0), "cap below minimum");
-    check(near(RiskVolume(100, 1000, .01, 1, 0), 0), "invalid lot step");
-    check(RiskVolume(100, 1007, .01, 1, .01) < RiskVolume(100, 1000, .01, 1, .01),
-          "commission reserve reduces volume");
+    check(FixedVolume(.01, .01, 100, .01) == .01, "fixed 0.01 lot exactly");
+    check(FixedVolume(.01, .001, 100, .001) == .01, "three-decimal broker step");
+    check(FixedVolume(.01, .01, .01, .01) == .01, "inclusive broker limits");
+    check(FixedVolume(.01, .1, 100, .1) == 0, "never round up to broker minimum");
+    check(FixedVolume(.01, .001, .005, .001) == 0, "never round down to broker maximum");
+    check(FixedVolume(.01, .001, 100, .003) == 0, "reject incompatible step");
+    check(FixedVolume(.015, .01, 100, .01) == 0, "never round requested lots");
+    check(FixedVolume(.75, .25, 10, .25) == .75, "nondecimal lot step");
+    check(FixedVolume(nan, .01, 100, .01) == 0, "reject NaN lots");
+    check(FixedVolume(inf, .01, 100, .01) == 0, "reject infinite lots");
+    check(FixedVolume(.01, nan, 100, .01) == 0, "reject NaN minimum");
+    check(FixedVolume(.01, .01, inf, .01) == 0, "reject infinite maximum");
+    check(FixedVolume(.01, .01, 100, nan) == 0, "reject NaN step");
+    check(FixedVolume(.01, .01, 100, 0) == 0, "reject zero step");
+    check(FixedVolume(.01, .01, 100, -.01) == 0, "reject negative step");
+    check(FixedVolume(0, .01, 100, .01) == 0, "reject zero lots");
+    check(FixedVolume(-.01, .01, 100, .01) == 0, "reject negative lots");
+    check(FixedVolume(.01, 0, 100, .01) == 0, "reject zero minimum");
+    check(FixedVolume(.01, .1, .01, .01) == 0, "reject reversed limits");
 
     std::mt19937 random(9132026);
     std::uniform_real_distribution<double> unit(0, 1);
@@ -115,15 +118,14 @@ int main()
         for (double price : {entry, sl, tp})
             check(std::abs(price / tick - std::round(price / tick)) < 1e-7, "tick grid");
 
-        const double budget = .1 + 1000 * unit(random);
-        const double loss = 10 + 5000 * unit(random);
         const double step = steps[i % 4];
-        const double cap = step + 3 * unit(random);
-        const double volume = RiskVolume(budget, loss, step, cap, step);
-        check(volume * loss <= budget + 1e-8, "risk budget never exceeded");
-        check(volume <= cap + 1e-8, "lot cap never exceeded");
-        check(volume == 0 || volume >= step - 1e-8, "minimum lot respected");
-        check(std::abs(volume / step - std::round(volume / step)) < 1e-7, "lot grid");
+        const double requested = NormalizeDouble((1 + i % 100) * step, 8);
+        const double volume = FixedVolume(requested, step, 100, step);
+        check(volume == requested, "valid fixed lots preserved exactly");
+        check(FixedVolume(requested + step * .25, step, 100, step) == 0,
+              "off-grid lots rejected, not rounded");
+        check(FixedVolume(.01, .001, 1 + 100 * unit(random), .001) == .01,
+              "fixed default does not grow with broker limit");
     }
     std::cout << "PASS: " << checks << " checks (including 10,000 deterministic randomized cases).\n";
 }

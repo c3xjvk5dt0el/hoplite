@@ -1,6 +1,6 @@
 #ifndef MOMENTUM_CORE_TEST
 #property copyright "Momentum Candle XAU"
-#property version   "1.01"
+#property version   "1.02"
 #property strict
 #property description "Closed-bar XAUUSD M5/M15 momentum breakout. Demo-test before live use."
 
@@ -76,24 +76,23 @@ bool MomentumLevels(const bool buy, const double high, const double low,
           (buy ? (sl < entry && tp > entry) : (tp < entry && sl > entry));
 }
 
-double RiskVolume(const double budget, const double loss_per_lot,
-                  const double min_lot, const double max_lot,
-                  const double step)
+double FixedVolume(const double requested, const double min_lot,
+                   const double max_lot, const double step)
 {
-   if(!MathIsValidNumber(budget) || !MathIsValidNumber(loss_per_lot) ||
+   if(!MathIsValidNumber(requested) ||
       !MathIsValidNumber(min_lot) || !MathIsValidNumber(max_lot) || !MathIsValidNumber(step))
       return 0.0;
-   if(budget <= 0.0 || loss_per_lot <= 0.0 || min_lot <= 0.0 ||
-      max_lot < min_lot || step <= 0.0)
+   if(requested <= 0.0 || min_lot <= 0.0 || max_lot < min_lot || step <= 0.0 ||
+      requested < min_lot || requested > max_lot)
       return 0.0;
 
-   const double cap = MathMin(budget / loss_per_lot, max_lot);
-   double volume = MathFloor(cap / step + 1e-9) * step;
-   if(volume * loss_per_lot > budget + 1e-8)
-      volume -= step;
-   if(volume < min_lot - 1e-9)
+   const double volume = NormalizeDouble(requested, 8);
+   const double grid_volume = MathFloor(volume / step + 0.5) * step;
+   // Reject incompatible lots instead of silently rounding up or down.
+   if(volume <= 0.0 || MathAbs(volume - requested) > 1e-10 ||
+      MathAbs(grid_volume - volume) > 1e-10)
       return 0.0;
-   return NormalizeDouble(volume, 8);
+   return volume;
 }
 
 // Local C++ tests compile only the math above; MT5 compiles the complete EA.
@@ -122,11 +121,9 @@ input double InpRewardRisk = 2.0;
 input int    InpPendingBars = 3;
 input int    InpMaxSignalDelaySeconds = 30;
 
-input group "Risk and execution"
-input double InpRiskPercent = 0.50;
-input double InpMaxLots = 1.0;
+input group "Fixed lot and execution"
+input double InpFixedLots = 0.01;
 input double InpMaxSpreadPrice = 0.50;
-input double InpRoundTripCostPerLot = 0.0;
 input ulong  InpMagic = 26091301;
 
 CTrade trade;
@@ -165,11 +162,19 @@ int OnInit()
       InpPendingBars < 1 || InpPendingBars > 100 ||
       InpMaxSignalDelaySeconds < 1 ||
       InpMaxSignalDelaySeconds >= PeriodSeconds(_Period) ||
-      InpRiskPercent <= 0 || InpRiskPercent > 5 || InpMaxLots <= 0 ||
-      InpMaxSpreadPrice <= 0 || InpRoundTripCostPerLot < 0 || InpMagic == 0 ||
+      !MathIsValidNumber(InpFixedLots) || InpFixedLots <= 0 ||
+      InpMaxSpreadPrice <= 0 || InpMagic == 0 ||
       (InpUseEMA && PeriodSeconds(InpEMATimeframe) < PeriodSeconds(_Period)))
    {
-      Print("Invalid inputs. Risk must be > 0 and <= 5%; EMA TF must be >= chart TF.");
+      Print("Invalid inputs. Fixed lots must be positive; EMA TF must be >= chart TF.");
+      return INIT_PARAMETERS_INCORRECT;
+   }
+
+   if(FixedVolume(InpFixedLots, SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN),
+                  SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX),
+                  SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP)) <= 0.0)
+   {
+      PrintFormat("Fixed lots %.8f incompatible with broker min/max/step. Lot will not be changed.", InpFixedLots);
       return INIT_PARAMETERS_INCORRECT;
    }
 
@@ -199,7 +204,7 @@ int OnInit()
    trade.SetTypeFilling(ORDER_FILLING_RETURN);
    trade.SetMarginMode();
    last_processed_bar = iTime(_Symbol, _Period, 0);
-   Print("Ready. Waiting for the next closed candle. Risk excludes unbudgeted costs and gaps.");
+   PrintFormat("Ready. Fixed lots=%.8f, no equity-based sizing. Waiting for next closed candle.", InpFixedLots);
    return INIT_SUCCEEDED;
 }
 
@@ -278,25 +283,24 @@ void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
 
    const ENUM_ORDER_TYPE side = buy ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
    const double min_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
-   const double max_lot = MathMin(InpMaxLots, SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX));
+   const double max_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
    const double lot_step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
-   double reference_profit = 0;
-   if(min_lot <= 0 || !OrderCalcProfit(side, _Symbol, min_lot, entry, sl, reference_profit) ||
-      reference_profit >= 0)
-   {
-      Print("Signal skipped: cannot calculate stop-loss risk.");
-      return;
-   }
-   const double budget = AccountInfoDouble(ACCOUNT_EQUITY) * InpRiskPercent / 100.0;
-   const double loss_per_lot = -reference_profit / min_lot + InpRoundTripCostPerLot;
-   const double volume = RiskVolume(budget, loss_per_lot, min_lot, max_lot, lot_step);
+   const double volume = FixedVolume(InpFixedLots, min_lot, max_lot, lot_step);
    if(volume <= 0)
    {
-      Print("Signal skipped: minimum broker lot exceeds risk budget or lot cap.");
+      Print("Signal skipped: fixed lots incompatible with broker min/max/step. Lot unchanged.");
+      return;
+   }
+   double stop_profit = 0;
+   if(!OrderCalcProfit(side, _Symbol, volume, entry, sl, stop_profit) ||
+      !MathIsValidNumber(stop_profit) || stop_profit >= 0)
+   {
+      Print("Signal skipped: cannot estimate stop-loss amount.");
       return;
    }
    double margin = 0;
    if(!OrderCalcMargin(side, _Symbol, volume, entry, margin) ||
+      !MathIsValidNumber(margin) || margin < 0 ||
       margin > AccountInfoDouble(ACCOUNT_MARGIN_FREE) * 0.90)
    {
       Print("Signal skipped: insufficient free margin.");
@@ -317,9 +321,9 @@ void SubmitSignal(const bool buy, const MqlRates &signal, const double atr,
                   trade.ResultRetcodeDescription());
       return;
    }
-   PrintFormat("%s stop #%I64u lots=%.8f entry=%.*f SL=%.*f TP=%.*f estimated risk=%.2f %s expires=%s",
+   PrintFormat("%s stop #%I64u fixed lots=%.8f entry=%.*f SL=%.*f TP=%.*f estimated SL loss before costs=%.2f %s expires=%s",
                buy ? "BUY" : "SELL", trade.ResultOrder(), volume, digits, entry,
-               digits, sl, digits, tp, volume * loss_per_lot,
+               digits, sl, digits, tp, -stop_profit,
                AccountInfoString(ACCOUNT_CURRENCY), TimeToString(expiration));
 }
 
